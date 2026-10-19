@@ -1,0 +1,1727 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>图标工具合集</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  :root{
+    --bg:#f5f7fc;--card:#ffffff;--text:#1e293b;--text-sub:#64748b;--text-muted:#94a3b8;
+    --border:#e2e8f0;--border-soft:#eef2f7;--row-bg:#f8fafc;--item-bg:#ffffff;--item-border:#e9eef3;
+    --img-bg:#f8fafc;--status-bg:#f1f5f9;--upload-bg:#fafcff;--upload-border:#cbd5e1;
+    --blue:#2563eb;--green:#059669;--purple:#7c3aed;--dark-mark:#1e293b;
+    --transfer-bg:#fffbeb;--transfer-border:#fde68a;--transfer-text:#92400e;
+    --mini-bg:#ffffff;--mini-border:#fde68a;--mini-text:#92400e;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#0f172a;--card:#1e293b;--text:#e2e8f0;--text-sub:#94a3b8;--text-muted:#64748b;
+      --border:#334155;--border-soft:#334155;--row-bg:#0f172a;--item-bg:#1e293b;--item-border:#334155;
+      --img-bg:#0f172a;--status-bg:#0f172a;--upload-bg:#0f172a;--upload-border:#334155;
+      --blue:#60a5fa;--green:#34d399;--purple:#a78bfa;--dark-mark:#f1f5f9;
+      --transfer-bg:#2d2410;--transfer-border:#78350f;--transfer-text:#fcd34d;
+      --mini-bg:#1e293b;--mini-border:#78350f;--mini-text:#fcd34d;
+    }
+  }
+  body{background:var(--bg);font-family:system-ui,-apple-system,sans-serif;padding:12px;min-height:100vh;color:var(--text);transition:background .2s,color .2s}
+  .top-tabs{max-width:1100px;margin:0 auto 12px;display:flex;gap:8px;background:var(--card);border-radius:20px;padding:6px;box-shadow:0 6px 18px rgba(0,0,0,.06)}
+  .tab-btn{flex:1;border:none;background:transparent;color:var(--text-sub);font-weight:700;font-size:.82rem;padding:10px 8px;border-radius:14px;cursor:pointer;transition:.15s}
+  .tab-btn.active{background:linear-gradient(90deg,var(--blue),var(--purple));color:#fff;box-shadow:0 4px 12px rgba(37,99,235,.25)}
+  .card{max-width:1100px;margin:0 auto;background:var(--card);border-radius:24px;box-shadow:0 10px 30px rgba(0,0,0,.06);padding:18px;transition:background .2s}
+  .panel{display:none}
+  .panel.active{display:block}
+  h1{font-size:1.3rem;font-weight:800;display:flex;align-items:center;gap:8px;background:linear-gradient(90deg,var(--blue),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .section-title{font-size:.82rem;font-weight:700;margin:12px 0 6px;display:flex;align-items:center;gap:6px}
+  .section-title .num{display:inline-flex;width:18px;height:18px;border-radius:50%;background:var(--blue);color:#fff;font-size:.6rem;align-items:center;justify-content:center}
+  .btn{border:none;border-radius:40px;padding:12px;font-size:.82rem;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;width:100%;margin-top:8px;transition:.15s}
+  .btn:active{transform:scale(.98)}
+  .btn-secondary{background:var(--item-bg);color:var(--text);border:1px solid var(--border)}
+  .btn-secondary:disabled{opacity:.4;cursor:not-allowed}
+  .btn-green{background:var(--green);color:#fff}
+  .btn-green:disabled{background:var(--border);cursor:not-allowed;color:var(--text-muted)}
+  .btn-blue{background:var(--blue);color:#fff}
+  .btn-blue:disabled{background:var(--border);cursor:not-allowed;color:var(--text-muted)}
+  .btn-purple{background:var(--purple);color:#fff}
+  .btn-purple:disabled{background:var(--border);cursor:not-allowed;color:var(--text-muted)}
+
+  .upload-area{border:2px dashed var(--upload-border);border-radius:16px;padding:18px;text-align:center;background:var(--upload-bg);cursor:pointer;transition:.15s}
+  .upload-area:active{border-color:var(--blue);background:var(--row-bg)}
+  .upload-area input{display:none}
+  .upload-label{display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer}
+  .upload-label .icon{font-size:1.8rem}
+  .upload-label .main{font-weight:600;color:var(--blue);font-size:.9rem}
+  .upload-label .sub{font-size:.68rem;color:var(--text-muted)}
+
+  .transfer-box{background:var(--transfer-bg);border:1px solid var(--transfer-border);border-radius:16px;padding:12px;margin-top:8px}
+  .transfer-title{font-size:.75rem;font-weight:700;color:var(--transfer-text);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+  .transfer-row{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
+  .mini-upload{font-size:.7rem;padding:6px 10px;border-radius:20px;background:var(--mini-bg);border:1px solid var(--mini-border);color:var(--mini-text);cursor:pointer;font-weight:600;white-space:nowrap}
+  .mini-upload:active{opacity:.8}
+  .mini-upload input{display:none}
+  .mini-status{font-size:.65rem;color:var(--green);font-weight:600}
+  .mini-status.err{color:#dc2626}
+  .dark-thumbs{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+  .dark-thumbs .dark-thumb{flex:0 0 auto;width:130px;background:var(--item-bg);border:2px solid var(--item-border);border-radius:12px;padding:6px;display:flex;flex-direction:column;align-items:center}
+  .dark-thumbs .dark-thumb img{width:100%;height:80px;object-fit:contain;background:var(--img-bg);border-radius:6px}
+  .dark-thumbs .dark-thumb .n{font-size:.55rem;margin-top:4px;word-break:break-all;text-align:center;color:var(--green);font-weight:700}
+
+  .group-block{margin-top:14px;background:var(--row-bg);border-radius:16px;padding:10px 12px 12px;border:1px solid var(--border-soft)}
+  .group-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+  .group-info{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .group-size{font-size:.72rem;font-weight:700;color:var(--blue);background:rgba(37,99,235,.12);padding:3px 12px;border-radius:20px}
+  .group-name{font-size:.72rem;font-weight:700;color:var(--green);background:rgba(5,150,105,.12);padding:3px 12px;border-radius:20px}
+  .group-count{font-size:.65rem;color:var(--text-muted)}
+  .group-select{font-size:.7rem;padding:5px 10px;border-radius:12px;border:1px solid var(--border);background:var(--item-bg);color:var(--text);font-weight:600;outline:none;cursor:pointer}
+  .group-select:focus{border-color:var(--blue)}
+
+  .group-inner{display:flex;gap:10px;flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px}
+  .group-inner::-webkit-scrollbar{height:6px}
+  .group-inner::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+  .group-inner > .preview-item{flex:0 0 auto;width:200px}
+
+  .preview-item{background:var(--item-bg);border:2px solid var(--item-border);border-radius:14px;padding:8px;display:flex;flex-direction:column;align-items:center;transition:.15s;cursor:pointer;position:relative;-webkit-user-select:none;user-select:none}
+  .preview-item.selected{border-color:var(--blue);background:rgba(37,99,235,.08);box-shadow:0 0 0 3px rgba(37,99,235,.15)}
+  .img-wrap{width:100%;height:120px;display:flex;align-items:center;justify-content:center;background:var(--img-bg);border-radius:8px;overflow:hidden;pointer-events:none}
+  .img-wrap img{max-width:100%;max-height:100%;object-fit:contain;display:block}
+  .preview-dim{font-size:.6rem;color:var(--blue);font-weight:600;margin-top:5px;pointer-events:none}
+  .preview-orig{font-size:.55rem;color:var(--text-muted);text-align:center;margin-top:3px;word-break:break-all;line-height:1.3;pointer-events:none;max-width:100%}
+  .preview-item .badge{font-size:.6rem;padding:4px 8px;border-radius:20px;font-weight:700;margin-top:6px;text-align:center;word-break:break-all;max-width:100%;pointer-events:none}
+  .preview-item .badge.assigned{background:rgba(5,150,105,.15);color:var(--green)}
+  .preview-item .badge.none{background:rgba(220,38,38,.12);color:#dc2626}
+  .preview-item .dark-mark{position:absolute;top:5px;right:5px;font-size:.5rem;padding:2px 5px;border-radius:8px;background:var(--dark-mark);color:var(--card);font-weight:600;pointer-events:none}
+  .preview-item .gen-mark{position:absolute;top:5px;left:5px;font-size:.5rem;padding:2px 5px;border-radius:8px;background:var(--purple);color:#fff;font-weight:600;pointer-events:none}
+  .preview-item .trim-mark{position:absolute;bottom:5px;left:5px;font-size:.5rem;padding:2px 5px;border-radius:8px;background:#0891b2;color:#fff;font-weight:600;pointer-events:none}
+  .preview-item .keep-mark{position:absolute;bottom:5px;left:5px;font-size:.5rem;padding:2px 5px;border-radius:8px;background:#65a30d;color:#fff;font-weight:600;pointer-events:none}
+
+  .status{display:flex;justify-content:space-between;background:var(--status-bg);padding:8px 12px;border-radius:40px;font-size:.68rem;color:var(--text-sub);margin-top:10px}
+  .log{margin-top:12px;background:#0f172a;color:#e2e8f0;padding:10px;border-radius:12px;font-size:.65rem;font-family:monospace;max-height:100px;overflow-y:auto;white-space:pre-wrap;word-break:break-all;line-height:1.5}
+  .log:empty{display:none}
+  .empty-tip{color:var(--text-muted);font-size:.78rem;text-align:center;padding:18px 0}
+  .swap-hint{font-size:.75rem;color:var(--blue);background:rgba(37,99,235,.1);border-radius:10px;padding:8px 12px;margin-top:8px;display:none;text-align:center;font-weight:700;position:sticky;top:6px;z-index:10;border:1px solid rgba(37,99,235,.25)}
+  .swap-hint.on{display:block}
+  .progress{margin-top:10px;font-size:.7rem;color:var(--blue);text-align:center;font-weight:600;display:none}
+  .progress.on{display:block}
+  .hint{font-size:.65rem;color:var(--text-muted);margin-top:6px;line-height:1.4}
+
+  .zipname-box{
+    display:flex;align-items:center;gap:8px;margin-top:10px;
+    background:var(--row-bg);border:1px solid var(--border-soft);border-radius:14px;padding:8px 12px;
+  }
+  .zipname-box .label{font-size:.7rem;font-weight:700;color:var(--text-sub);white-space:nowrap}
+  .zipname-box input{
+    flex:1;min-width:0;padding:6px 10px;border:1px solid var(--border);border-radius:10px;
+    background:var(--item-bg);color:var(--text);font-size:.75rem;font-weight:600;outline:none;
+  }
+  .zipname-box input:focus{border-color:var(--blue)}
+  .zipname-box .ext{font-size:.72rem;color:var(--text-muted);font-weight:600}
+
+  .share-box{background:var(--row-bg);border:1px solid var(--border-soft);border-radius:16px;padding:12px;margin-top:10px}
+  .share-title{font-size:.75rem;font-weight:700;color:var(--purple);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+  .share-desc{font-size:.65rem;color:var(--text-muted);line-height:1.5;margin-bottom:6px}
+
+  @media (max-width:420px){
+    .img-wrap{height:100px}
+    .group-inner > .preview-item{width:160px}
+    .preview-item .badge{font-size:.55rem}
+    .dark-thumbs .dark-thumb{width:110px}
+  }
+</style>
+</head>
+<body>
+
+<!-- 顶部切换 -->
+<div class="top-tabs">
+  <button class="tab-btn active" data-tab="box">🔄 昀昀盒子</button>
+  <button class="tab-btn" data-tab="diy">🎯 昀昀图标一键 DIY</button>
+</div>
+
+<!-- ============ 面板1：昀昀盒子 ============ -->
+<div class="card panel active" id="panel-box">
+  <h1>🔄 昀昀盒子</h1>
+
+  <div class="section-title"><span class="num">1</span> 上传（支持图片和 ZIP，上传后自动处理）</div>
+  <div class="upload-area" id="uploadArea">
+    <input type="file" id="fileInput" accept="image/*,.zip,application/zip" multiple>
+    <div class="upload-label">
+      <span class="icon">📂</span>
+      <span class="main">点击选择 或 拖拽 图片 / ZIP</span>
+      <span class="sub">支持 JPG/PNG/WebP/BMP，也支持 .zip 自动解压</span>
+    </div>
+  </div>
+
+  <div class="progress" id="progress">正在处理…</div>
+
+  <div class="section-title"><span class="num">2</span> 夜间模式生成（专属入口）</div>
+  <div class="transfer-box">
+    <div class="transfer-title">🌙 夜间模式 1 张 → 复制 2 张</div>
+    <div class="transfer-row">
+      <label class="mini-upload">
+        📂 选择夜间模式图片
+        <input type="file" id="transferDarkInput" accept="image/*">
+      </label>
+      <span class="mini-status" id="transferDarkStatus">未上传</span>
+    </div>
+    <div class="dark-thumbs" id="darkThumbs"></div>
+  </div>
+
+  <div class="section-title"><span class="num">3</span> 自动命名结果（可手动调整）</div>
+  <div id="previewArea">
+    <div class="empty-tip" id="emptyTip">还没有上传图片</div>
+  </div>
+
+  <div class="swap-hint" id="swapHint">已选中一张，请点击另一张来互换名字</div>
+
+  <div class="status">
+    <span id="counter">已上传 0 张</span>
+    <span id="assignInfo">已命名 0 张</span>
+  </div>
+
+  <div class="zipname-box">
+    <span class="label">📦 压缩包名</span>
+    <input type="text" id="zipNameInput" placeholder="输入压缩包名称" value="昀昀盒子">
+    <span class="ext">.zip</span>
+  </div>
+
+  <button class="btn btn-secondary" id="clearBtn" disabled>🗑️ 清空全部图片</button>
+  <button class="btn btn-green" id="downloadBtn" disabled>📦 打包下载重命名图片（单独）</button>
+
+  <div class="log" id="log"></div>
+  <div class="hint">💡 781×271 自动复制成 10 张，171×121 自动 2 张，850×125 自动 4 张（input_text_bg / input_voice_bg / _Dark），夜间模式 2 张。**171×121、781×271、850×125 这三种尺寸不裁剪透明底，保留原尺寸**。tabbar_bg / topbar_bg / input_bg / default_bg / chat_bg 都按名字两两一组，不会因为尺寸相近被合并。</div>
+</div>
+
+<!-- ============ 面板2：昀昀图标一键 DIY ============ -->
+<div class="card panel" id="panel-diy">
+  <h1>🎯 昀昀图标一键 DIY</h1>
+  <div class="section-title"><span class="num">1</span> 上传图片（可多张，会轮流分配）</div>
+  <div class="upload-area" id="diyUploadArea">
+    <input type="file" id="diyFileInput" accept="image/*" multiple>
+    <div class="upload-label">
+      <span class="icon">📂</span>
+      <span class="main">点击选择 或 拖拽多张图片</span>
+      <span class="sub">这 N 张图会轮流分配到 2348 个名字上</span>
+    </div>
+  </div>
+
+  <div class="progress" id="diyProgress">正在处理…</div>
+
+  <div class="section-title"><span class="num">2</span> 输出选项</div>
+  <div class="transfer-box" style="background:rgba(236,72,153,.06);border-color:rgba(236,72,153,.3);">
+    <div class="transfer-row" style="margin-top:0;">
+      <span style="font-size:.78rem;font-weight:600;flex:1;">生成 @2x 图片（60×60）</span>
+      <input type="checkbox" id="diyX2Toggle" checked style="width:20px;height:20px;accent-color:var(--green);">
+    </div>
+    <div class="transfer-row">
+      <span style="font-size:.7rem;color:var(--text-sub);min-width:64px;">@2x 尺寸</span>
+      <input type="text" id="diyX2Size" value="60*60" style="flex:1;padding:8px 12px;border-radius:12px;border:1px solid var(--border);background:var(--item-bg);color:var(--text);font-size:.8rem;font-weight:600;outline:none;">
+    </div>
+    <div class="transfer-row">
+      <span style="font-size:.7rem;color:var(--text-sub);min-width:64px;">@3x 尺寸</span>
+      <input type="text" id="diyX3Size" value="70*70" style="flex:1;padding:8px 12px;border-radius:12px;border:1px solid var(--border);background:var(--item-bg);color:var(--text);font-size:.8rem;font-weight:600;outline:none;">
+    </div>
+    <div class="transfer-row">
+      <span style="font-size:.7rem;color:var(--text-sub);min-width:64px;">输出文件夹</span>
+      <input type="text" id="diyFolderName" value="Assets" style="flex:1;padding:8px 12px;border-radius:12px;border:1px solid var(--border);background:var(--item-bg);color:var(--text);font-size:.8rem;font-weight:600;outline:none;">
+    </div>
+    <div class="hint">@2x 名单用 @2x 尺寸，@3x 和无后缀名单用 @3x 尺寸。等比缩放，不裁剪、不变形、保留透明底。</div>
+  </div>
+
+  <div class="section-title"><span class="num">3</span> 已导入图片</div>
+  <div class="status">
+    <span>🖼️ 已导入 <span style="background:var(--blue);color:#fff;border-radius:20px;padding:2px 10px;font-size:.65rem;font-weight:700;" id="diyImgCount">0</span> 张</span>
+    <span>📋 清单 <span style="background:var(--purple);color:#fff;border-radius:20px;padding:2px 10px;font-size:.65rem;font-weight:700;" id="diyListCount">2348</span> 行</span>
+    <span>📦 预计生成 <span style="background:var(--green);color:#fff;border-radius:20px;padding:2px 10px;font-size:.65rem;font-weight:700;" id="diyOutputCount">0</span> 个文件</span>
+  </div>
+  <div style="max-height:220px;overflow-y:auto;background:var(--row-bg);border-radius:16px;padding:8px;margin-top:10px;" id="diyListBox">
+    <div class="empty-tip">还没有导入图片</div>
+  </div>
+
+  <button class="btn btn-secondary" id="diyClearBtn" disabled>🗑️ 清空图片</button>
+  <button class="btn btn-blue" id="diyProcessBtn" disabled>🚀 处理并打包下载 ZIP（单独）</button>
+</div>
+
+<!-- ============ 互通 & 合并打包区 ============ -->
+<div class="card" style="margin-top:12px;">
+  <div class="share-box">
+    <div class="share-title">🔗 互通与合并打包</div>
+    <div class="share-desc">
+      · <strong>互通</strong>：两个工具处理过的图片会出现在对方的列表里。<br>
+      · <strong>合并打包</strong>：把两个工具里所有已命名的图片打到一个 ZIP 里。昀昀盒子处理的图片放在压缩包根目录，昀昀图标一键 DIY 的命名图片统一放进 <strong>Assets</strong> 子文件夹。
+    </div>
+    <button class="btn btn-purple" id="mergeExportBtn">📦 合并打包下载 ZIP</button>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>
+(function(){
+  // ========================================================
+  // 顶部 Tab 切换
+  // ========================================================
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const panels = document.querySelectorAll('.panel');
+  tabBtns.forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      tabBtns.forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      const tab = btn.dataset.tab;
+      panels.forEach(p=>{
+        p.classList.toggle('active', p.id === 'panel-' + tab);
+      });
+    });
+  });
+
+  // ========================================================
+  // ★ 核心全局仓库（确保两边的数据都在这里，永不丢失）
+  // ========================================================
+  const globalArchive = {
+    box: [],  // 存盒子里的图 { name, ext, blob }
+    diy: []   // 存 DIY 里的图 { name, blob } (完整文件名)
+  };
+
+  function updateMergeHint(){
+    const el = document.getElementById('mergeExportBtn');
+    if(!el) return;
+    const total = globalArchive.box.length + (globalArchive.diy.length > 0 ? 2348 : 0);
+    el.textContent = total > 0
+      ? `📦 合并打包下载 ZIP（预计包含 盒子${globalArchive.box.length}张 + Assets 2348张）`
+      : '📦 合并打包下载 ZIP（暂无图片）';
+    el.disabled = total === 0;
+  }
+  updateMergeHint();
+
+  // ========================================================
+  // 面板 1：昀昀盒子
+  // ========================================================
+  const fileInput = document.getElementById('fileInput');
+  const uploadArea = document.getElementById('uploadArea');
+  const previewArea = document.getElementById('previewArea');
+  const emptyTip = document.getElementById('emptyTip');
+  const counterEl = document.getElementById('counter');
+  const assignInfoEl = document.getElementById('assignInfo');
+  const clearBtn = document.getElementById('clearBtn');
+  const downloadBtn = document.getElementById('downloadBtn');
+  const logEl = document.getElementById('log');
+  const swapHint = document.getElementById('swapHint');
+  const progressEl = document.getElementById('progress');
+  const transferDarkInput = document.getElementById('transferDarkInput');
+  const transferDarkStatus = document.getElementById('transferDarkStatus');
+  const darkThumbsEl = document.getElementById('darkThumbs');
+  const zipNameInput = document.getElementById('zipNameInput');
+
+  const NAME_SCHEMES = {
+    'input_bg_pair': { label: 'input_bg ⇄ input_bg_Dark', names: ['input_bg', 'input_bg_Dark'] },
+    'tabbar_bg_pair': { label: 'tabbar_bg ⇄ tabbar_bg_Dark', names: ['tabbar_bg', 'tabbar_bg_Dark'] },
+    'topbar_bg_pair': { label: 'topbar_bg ⇄ topbar_bg_Dark', names: ['topbar_bg', 'topbar_bg_Dark'] },
+    'default_bg_pair': { label: 'default_bg ⇄ default_bg_Dark', names: ['default_bg', 'default_bg_Dark'] },
+    'chat_bg_pair': { label: 'chat_bg ⇄ chat_bg_Dark', names: ['chat_bg', 'chat_bg_Dark'] },
+    'transfer10': {
+      label: '转账 10 张（781×271）',
+      names: [
+        'c2creceivermsgnodebg_handled','c2creceivermsgnodebg',
+        'c2csendermsgnodebg','c2csendermsgnodebg_handled',
+        'ChatRoom_Bubble_HB_Overtime_Receiver','ChatRoom_Bubble_HB_Overtime_Sender',
+        'ChatRoom_Bubble_HB_Receiver_Handled','ChatRoom_Bubble_HB_Receiver',
+        'ChatRoom_Bubble_HB_Sender_Handled','ChatRoom_Bubble_HB_Sender'
+      ]
+    },
+    'bubble2': { label: '气泡 2 张（171×121）', names: ['ChatRoom_Bubble_Text_Sender_Green','ChatRoom_Bubble_Text_Receiver_White'] },
+    'night2': { label: '夜间 2 张', names: ['ChatRoom_Bubble_Text_Receiver_Dark_HL','ChatRoom_Bubble_Text_Receiver_Dark'] },
+    'input_bg_voice_4': {
+      label: '输入框 4 张（850×125）',
+      names: ['input_text_bg','input_voice_bg','input_text_bg_Dark','input_voice_bg_Dark']
+    },
+    'none': { label: '不命名 / 手动', names: [] }
+  };
+
+  const SIZE_TO_SCHEME = [
+    { w: 781,  h: 271,  key: 'transfer10' },
+    { w: 171,  h: 121,  key: 'bubble2' },
+    { w: 850,  h: 125,  key: 'input_bg_voice_4' },
+    { w: 1178, h: 241,  key: 'input_bg_pair' },
+    { w: 1178, h: 242,  key: 'input_bg_pair' },
+    { w: 1178, h: 254,  key: 'tabbar_bg_pair' },
+    { w: 1178, h: 256,  key: 'tabbar_bg_pair' },
+    { w: 1179, h: 292,  key: 'topbar_bg_pair' },
+    { w: 1179, h: 263,  key: 'topbar_bg_pair' },
+    { w: 1179, h: 2556, key: 'default_chat' }
+  ];
+
+  const NO_TRIM_SIZES = [
+    { w: 171, h: 121 },
+    { w: 781, h: 271 },
+    { w: 850, h: 125 }
+  ];
+
+  const TOLERANCE = 3;
+  const ALPHA_THRESHOLD = 1;
+  const MAX_SCAN = 400;
+  const TRIM_TIMEOUT = 3000;
+
+  let images = [];
+  let groups = [];
+  let selectedId = null;
+  let isProcessing = false;
+
+  function log(msg, isError=false){
+    const t = new Date().toLocaleTimeString('zh-CN',{hour12:false});
+    logEl.innerHTML += `[${t}] ${isError?'❌':'📌'} ${msg}\n`;
+    logEl.scrollTop = logEl.scrollHeight;
+  }
+  function clearLog(){ logEl.innerHTML=''; }
+  function uid(){ return Date.now() + '_' + Math.random().toString(36).slice(2,8); }
+  function normalizeExt(ext){
+    if(!ext) return '';
+    ext = ext.trim();
+    if(ext && !ext.startsWith('.')) ext = '.' + ext;
+    return ext;
+  }
+  function isDarkName(name){ return /_Dark$/i.test(name); }
+  function isImageFile(name){ return /\.(jpe?g|png|webp|bmp|gif|tiff?)$/i.test(name); }
+
+  function shouldSkipTrim(w, h){
+    for(const s of NO_TRIM_SIZES){
+      if(Math.abs(w - s.w) <= TOLERANCE && Math.abs(h - s.h) <= TOLERANCE){
+        return true;
+      }
+    }
+    return false;
+  }
+
+  function sortPairItems(items, schemeKey){
+    if(schemeKey === 'bubble2'){
+      const order = ['ChatRoom_Bubble_Text_Sender_Green','ChatRoom_Bubble_Text_Receiver_White'];
+      return [...items].sort((a,b)=>{
+        const ai = order.indexOf(a.assignedName);
+        const bi = order.indexOf(b.assignedName);
+        return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
+      });
+    }
+    if(schemeKey === 'night2'){
+      const order = ['ChatRoom_Bubble_Text_Receiver_Dark_HL','ChatRoom_Bubble_Text_Receiver_Dark'];
+      return [...items].sort((a,b)=>{
+        const ai = order.indexOf(a.assignedName);
+        const bi = order.indexOf(b.assignedName);
+        return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
+      });
+    }
+    if(schemeKey === 'input_bg_voice_4'){
+      const order = ['input_text_bg','input_voice_bg','input_text_bg_Dark','input_voice_bg_Dark'];
+      return [...items].sort((a,b)=>{
+        const ai = order.indexOf(a.assignedName);
+        const bi = order.indexOf(b.assignedName);
+        return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
+      });
+    }
+    return [...items].sort((a,b)=>{
+      const aName = a.assignedName || '';
+      const bName = b.assignedName || '';
+      const aDark = isDarkName(aName) ? 1 : 0;
+      const bDark = isDarkName(bName) ? 1 : 0;
+      if(aDark !== bDark) return aDark - bDark;
+      return aName.localeCompare(bName);
+    });
+  }
+
+  function getImageSize(file){
+    return new Promise((resolve,reject)=>{
+      const url = URL.createObjectURL(file);
+      const img = new Image();
+      img.onload = ()=> resolve({width:img.naturalWidth,height:img.naturalHeight,url});
+      img.onerror = ()=>{ URL.revokeObjectURL(url); reject(new Error('加载失败')); };
+      img.src = url;
+    });
+  }
+
+  function trimTransparent(file, alphaThreshold = ALPHA_THRESHOLD, timeoutMs = TRIM_TIMEOUT){
+    return new Promise((resolve)=>{
+      let done = false;
+      let timer = null;
+      const finish = (val)=>{
+        if(done) return;
+        done = true;
+        if(timer) clearTimeout(timer);
+        resolve(val);
+      };
+      timer = setTimeout(()=>{
+        console.warn('trimTransparent 超时，跳过裁剪:', file.name);
+        finish(null);
+      }, timeoutMs);
+
+      const url = URL.createObjectURL(file);
+      const img = new Image();
+      img.onload = ()=>{
+        try{
+          const w = img.naturalWidth, h = img.naturalHeight;
+          if(!w || !h){ URL.revokeObjectURL(url); finish(null); return; }
+          if(Math.max(w, h) > 6000){ URL.revokeObjectURL(url); finish(null); return; }
+
+          const scale = Math.min(1, MAX_SCAN / Math.max(w, h));
+          const sw = Math.max(1, Math.round(w * scale));
+          const sh = Math.max(1, Math.round(h * scale));
+
+          let data;
+          try{
+            const scanCanvas = document.createElement('canvas');
+            scanCanvas.width = sw; scanCanvas.height = sh;
+            const sctx = scanCanvas.getContext('2d', { willReadFrequently: true });
+            sctx.drawImage(img, 0, 0, sw, sh);
+            const imageData = sctx.getImageData(0, 0, sw, sh);
+            data = imageData.data;
+          }catch(e){
+            URL.revokeObjectURL(url);
+            finish(null);
+            return;
+          }
+
+          let minX = sw, minY = sh, maxX = -1, maxY = -1;
+          for(let y = 0; y < sh; y++){
+            const rowOffset = y * sw * 4;
+            for(let x = 0; x < sw; x++){
+              const a = data[rowOffset + x * 4 + 3];
+              if(a > alphaThreshold){
+                if(x < minX) minX = x;
+                if(x > maxX) maxX = x;
+                if(y < minY) minY = y;
+                if(y > maxY) maxY = y;
+              }
+            }
+          }
+
+          if(maxX === -1 || (minX === 0 && minY === 0 && maxX === sw - 1 && maxY === sh - 1)){
+            URL.revokeObjectURL(url);
+            finish(null);
+            return;
+          }
+
+          const invScale = 1 / scale;
+          let rx = Math.floor(minX * invScale);
+          let ry = Math.floor(minY * invScale);
+          let rw = Math.ceil((maxX - minX + 1) * invScale);
+          let rh = Math.ceil((maxY - minY + 1) * invScale);
+          rx = Math.max(0, rx - 1);
+          ry = Math.max(0, ry - 1);
+          rw = Math.min(w - rx, rw + 2);
+          rh = Math.min(h - ry, rh + 2);
+
+          if(rx === 0 && ry === 0 && rw === w && rh === h){
+            URL.revokeObjectURL(url);
+            finish(null);
+            return;
+          }
+
+          try{
+            const out = document.createElement('canvas');
+            out.width = rw; out.height = rh;
+            const octx = out.getContext('2d');
+            octx.drawImage(img, rx, ry, rw, rh, 0, 0, rw, rh);
+            out.toBlob((blob)=>{
+              URL.revokeObjectURL(url);
+              if(!blob){ finish(null); return; }
+              const baseName = file.name.replace(/\.[^.]+$/, '');
+              const newFile = new File([blob], baseName + '.png', { type: 'image/png' });
+              finish({
+                file: newFile,
+                originalWidth: w,
+                originalHeight: h,
+                width: rw,
+                height: rh,
+                cropped: true
+              });
+            }, 'image/png');
+          }catch(e){
+            URL.revokeObjectURL(url);
+            finish(null);
+          }
+        }catch(e){
+          try{ URL.revokeObjectURL(url); }catch(_){}
+          finish(null);
+        }
+      };
+      img.onerror = ()=>{ try{ URL.revokeObjectURL(url); }catch(_){} finish(null); };
+      img.src = url;
+    });
+  }
+
+  async function trimBatch(files, onProgress){
+    const result = [];
+    for(let i = 0; i < files.length; i++){
+      const f = files[i];
+      if(onProgress) onProgress(i + 1, files.length, f.name);
+
+      let skipTrim = false;
+      try{
+        const {width, height} = await getImageSize(f);
+        if(shouldSkipTrim(width, height)){
+          skipTrim = true;
+          log(`⏭️ ${f.name} (${width}×${height}) 保留原尺寸，跳过透明底裁剪`);
+        }
+      }catch(e){}
+
+      if(skipTrim){
+        result.push({ file: f, trimmed: false, kept: true });
+        await new Promise(r=>setTimeout(r, 0));
+        continue;
+      }
+
+      try{
+        const res = await trimTransparent(f);
+        if(res && res.cropped){
+          log(`✂️ ${f.name} 透明底裁剪：${res.originalWidth}×${res.originalHeight} → ${res.width}×${res.height} (PNG)`);
+          result.push({
+            file: res.file,
+            trimmed: true,
+            originalWidth: res.originalWidth,
+            originalHeight: res.originalHeight
+          });
+        }else{
+          result.push({ file: f, trimmed: false });
+        }
+      }catch(e){
+        result.push({ file: f, trimmed: false });
+      }
+      await new Promise(r=>setTimeout(r, 0));
+    }
+    return result;
+  }
+
+  function schemeKeyBySize(w, h){
+    for(const s of SIZE_TO_SCHEME){
+      if(Math.abs(w - s.w) <= TOLERANCE && Math.abs(h - s.h) <= TOLERANCE){
+        return s.key;
+      }
+    }
+    return 'none';
+  }
+
+  function guessIsDark(fileName){
+    return /(_dark|_Dark|dark_|-dark)/i.test(fileName);
+  }
+
+  async function preprocessFiles(fileEntries){
+    const result = [];
+
+    const entriesWithSize = [];
+    for(const entry of fileEntries){
+      const file = entry.file || entry;
+      try{
+        const {width, height} = await getImageSize(file);
+        entriesWithSize.push({
+          entry, file, width, height,
+          trimmed: !!entry.trimmed,
+          kept: !!entry.kept,
+          originalWidth: entry.originalWidth||0,
+          originalHeight: entry.originalHeight||0
+        });
+      }catch(e){
+        log(`处理失败: ${file.name}`, true);
+      }
+      await new Promise(r=>setTimeout(r,0));
+    }
+
+    const inputBgEntries = entriesWithSize.filter(e => schemeKeyBySize(e.width, e.height) === 'input_bg_voice_4');
+    const sortedInputBg = [...inputBgEntries].sort((a,b)=>{
+      const aDark = guessIsDark(a.file.name) ? 1 : 0;
+      const bDark = guessIsDark(b.file.name) ? 1 : 0;
+      return aDark - bDark;
+    });
+
+    const inputBgPairs = [];
+    for(let i = 0; i < sortedInputBg.length; i += 2){
+      inputBgPairs.push(sortedInputBg.slice(i, i + 2));
+    }
+
+    const handledInputBg = new Set();
+    inputBgPairs.forEach(pair=>{
+      pair.forEach(e => handledInputBg.add(e.file));
+    });
+
+    for(const pair of inputBgPairs){
+      const lightE = pair[0];
+      const darkE = pair[1];
+
+      if(lightE){
+        const lightNames = ['input_text_bg','input_voice_bg'];
+        for(const name of lightNames){
+          const newFile = new File([lightE.file], name + '.png', { type: 'image/png' });
+          result.push({
+            file: newFile,
+            assignedName: name,
+            assignedExt: '.png',
+            isGenerated: (name !== 'input_text_bg'),
+            trimmed: lightE.trimmed,
+            kept: lightE.kept,
+            originalWidth: lightE.originalWidth,
+            originalHeight: lightE.originalHeight
+          });
+        }
+        log(`  🔁 ${lightE.file.name} (${lightE.width}×${lightE.height}) → input_text_bg + input_voice_bg`);
+      }
+
+      if(darkE){
+        const darkNames = ['input_text_bg_Dark','input_voice_bg_Dark'];
+        for(const name of darkNames){
+          const newFile = new File([darkE.file], name + '.png', { type: 'image/png' });
+          result.push({
+            file: newFile,
+            assignedName: name,
+            assignedExt: '.png',
+            isGenerated: (name !== 'input_text_bg_Dark'),
+            trimmed: darkE.trimmed,
+            kept: darkE.kept,
+            originalWidth: darkE.originalWidth,
+            originalHeight: darkE.originalHeight
+          });
+        }
+        log(`  🔁 ${darkE.file.name} (${darkE.width}×${darkE.height}) → input_text_bg_Dark + input_voice_bg_Dark`);
+      }
+    }
+
+    for(const e of entriesWithSize){
+      if(handledInputBg.has(e.file)) continue;
+      const { file, width, height, trimmed, kept, originalWidth, originalHeight } = e;
+      const key = schemeKeyBySize(width, height);
+
+      try{
+        if(key === 'transfer10'){
+          log(`  🔁 ${file.name} (${width}×${height}) → 复制成 10 张`);
+          const NAMES = NAME_SCHEMES.transfer10.names;
+          for(let i = 0; i < NAMES.length; i++){
+            const newFile = new File([file], NAMES[i] + '.png', { type: 'image/png' });
+            result.push({
+              file: newFile,
+              assignedName: NAMES[i],
+              assignedExt: '.png',
+              isGenerated: true,
+              trimmed: false,
+              kept: true
+            });
+          }
+          continue;
+        }
+
+        result.push({
+          file,
+          assignedName: null,
+          assignedExt: null,
+          isGenerated: false,
+          trimmed,
+          kept,
+          originalWidth,
+          originalHeight
+        });
+      }catch(err){
+        log(`处理失败: ${file.name}`, true);
+      }
+    }
+
+    return result;
+  }
+
+  function autoNameAll(){
+    const named = images.filter(im => im.assignedName);
+    const unnamed = images.filter(im => !im.assignedName);
+
+    named.forEach(im=>{
+      if(!im.assignedExt) im.assignedExt = '.png';
+    });
+
+    const sizeMap = new Map();
+    unnamed.forEach(img=>{
+      const key = `${img.width}x${img.height}`;
+      if(!sizeMap.has(key)) sizeMap.set(key, []);
+      sizeMap.get(key).push(img);
+    });
+
+    sizeMap.forEach(list=>{
+      const w = list[0].width, h = list[0].height;
+      const schemeKey = schemeKeyBySize(w, h);
+
+      if(schemeKey === 'default_chat'){
+        const names = ['default_bg','default_bg_Dark','chat_bg','chat_bg_Dark'];
+        list.forEach((img, idx)=>{
+          if(idx < names.length){
+            img.assignedName = names[idx];
+            img.assignedExt = '.png';
+          }
+        });
+        return;
+      }
+
+      if(schemeKey === 'bubble2'){
+        const names = NAME_SCHEMES.bubble2.names;
+        list.forEach((img, idx)=>{
+          if(idx < names.length){
+            img.assignedName = names[idx];
+            img.assignedExt = '.png';
+          }
+        });
+        return;
+      }
+
+      if(schemeKey === 'input_bg_voice_4'){
+        const names = NAME_SCHEMES.input_bg_voice_4.names;
+        list.forEach((img, idx)=>{
+          if(idx < names.length){
+            img.assignedName = names[idx];
+            img.assignedExt = '.png';
+          }
+        });
+        return;
+      }
+
+      if(schemeKey === 'transfer10') return;
+
+      const scheme = NAME_SCHEMES[schemeKey];
+      if(!scheme || scheme.names.length === 0){
+        return;
+      }
+      list.forEach((img, idx)=>{
+        if (idx < 2) {
+          const name = scheme.names[idx % scheme.names.length];
+          img.assignedName = name;
+          img.assignedExt = '.png';
+        }
+      });
+    });
+  }
+
+  function buildDisplayGroups(){
+    groups = [];
+    const handled = new Set();
+
+    const bubbleGreen = images.find(im=>im.assignedName === 'ChatRoom_Bubble_Text_Sender_Green');
+    const bubbleWhite = images.find(im=>im.assignedName === 'ChatRoom_Bubble_Text_Receiver_White');
+    if(bubbleGreen || bubbleWhite){
+      const items = [];
+      if(bubbleGreen) items.push(bubbleGreen);
+      if(bubbleWhite) items.push(bubbleWhite);
+      groups.push({
+        id: uid(), w: 171, h: 121, schemeKey: 'bubble2',
+        groupLabel: '气泡 2 张',
+        items: sortPairItems(items, 'bubble2')
+      });
+      items.forEach(x=>handled.add(x.id));
+    }
+
+    const darkHL = images.find(im=>im.assignedName === 'ChatRoom_Bubble_Text_Receiver_Dark_HL');
+    const dark = images.find(im=>im.assignedName === 'ChatRoom_Bubble_Text_Receiver_Dark');
+    if(darkHL || dark){
+      const items = [];
+      if(darkHL) items.push(darkHL);
+      if(dark) items.push(dark);
+      groups.push({
+        id: uid(), w: 0, h: 0, schemeKey: 'night2',
+        groupLabel: '夜间 2 张',
+        items: sortPairItems(items, 'night2')
+      });
+      items.forEach(x=>handled.add(x.id));
+    }
+
+    const inputBgItems = images.filter(im =>
+      im.assignedName === 'input_text_bg' ||
+      im.assignedName === 'input_voice_bg' ||
+      im.assignedName === 'input_text_bg_Dark' ||
+      im.assignedName === 'input_voice_bg_Dark'
+    );
+    if(inputBgItems.length > 0){
+      groups.push({
+        id: uid(), w: 850, h: 125, schemeKey: 'input_bg_voice_4',
+        groupLabel: '输入框 4 张',
+        items: sortPairItems(inputBgItems, 'input_bg_voice_4')
+      });
+      inputBgItems.forEach(x=>handled.add(x.id));
+    }
+
+    const PAIR_GROUPS = [
+      { key: 'input_bg_pair',   names: ['input_bg','input_bg_Dark'],           label: 'input_bg ⇄ input_bg_Dark',     w: 1178, h: 242 },
+      { key: 'tabbar_bg_pair',  names: ['tabbar_bg','tabbar_bg_Dark'],         label: 'tabbar_bg ⇄ tabbar_bg_Dark',   w: 1178, h: 255 },
+      { key: 'topbar_bg_pair',  names: ['topbar_bg','topbar_bg_Dark'],         label: 'topbar_bg ⇄ topbar_bg_Dark',   w: 1179, h: 292 },
+      { key: 'default_bg_pair', names: ['default_bg','default_bg_Dark'],       label: 'default_bg ⇄ default_bg_Dark', w: 1179, h: 2556 },
+      { key: 'chat_bg_pair',    names: ['chat_bg','chat_bg_Dark'],             label: 'chat_bg ⇄ chat_bg_Dark',       w: 1179, h: 2556 }
+    ];
+
+    PAIR_GROUPS.forEach(pg=>{
+      const allMatched = images.filter(im => pg.names.includes(im.assignedName));
+      if(allMatched.length === 0) return;
+
+      const chunks = [];
+      for (let i = 0; i < allMatched.length; i += 2) {
+        chunks.push(allMatched.slice(i, i + 2));
+      }
+
+      chunks.forEach(chunk => {
+        if (chunk.length === 0) return;
+        let groupW = chunk[0].width;
+        let groupH = chunk[0].height;
+        if (chunk.length === 2) {
+           groupW = Math.round((chunk[0].width + chunk[1].width) / 2);
+           groupH = Math.round((chunk[0].height + chunk[1].height) / 2);
+        }
+
+        groups.push({
+          id: uid(),
+          w: groupW, h: groupH,
+          schemeKey: pg.key,
+          groupLabel: pg.label,
+          items: sortPairItems(chunk, pg.key)
+        });
+        chunk.forEach(x=>handled.add(x.id));
+      });
+    });
+
+    const rest = images.filter(im=>!handled.has(im.id));
+    const sizeGroups = [];
+    const sorted = [...rest].sort((a,b)=> a.width*a.height - b.width*b.height);
+    
+    sorted.forEach(img=>{
+      let found = null;
+      let bestDiff = Infinity;
+      for(const g of sizeGroups){
+        const dw = Math.abs(g.w - img.width);
+        const dh = Math.abs(g.h - img.height);
+        if(dw <= TOLERANCE && dh <= TOLERANCE){
+          const isTransfer = schemeKeyBySize(g.w, g.h) === 'transfer10';
+          if (!isTransfer && g.items.length >= 2) continue; 
+          
+          const diff = dw + dh;
+          if(diff < bestDiff){ bestDiff = diff; found = g; }
+        }
+      }
+      if(found){
+        found.items.push(img);
+        const n = found.items.length;
+        found.w = Math.round((found.w*(n-1) + img.width)/n);
+        found.h = Math.round((found.h*(n-1) + img.height)/n);
+      } else {
+        sizeGroups.push({ w: img.width, h: img.height, items: [img] });
+      }
+    });
+
+    sizeGroups.forEach(sg=>{
+      const key = schemeKeyBySize(sg.w, sg.h);
+      groups.push({
+        id: uid(), w: sg.w, h: sg.h, schemeKey: key,
+        groupLabel: NAME_SCHEMES[key] ? NAME_SCHEMES[key].label : '未命名',
+        items: sortPairItems(sg.items, key)
+      });
+    });
+
+    groups.sort((a,b)=> {
+      if(a.schemeKey === 'bubble2') return -2;
+      if(a.schemeKey === 'night2') return -1;
+      if(b.schemeKey === 'bubble2') return 2;
+      if(b.schemeKey === 'night2') return 1;
+      return a.w - b.w || a.h - b.h;
+    });
+  }
+
+  function renderAll(){
+    previewArea.innerHTML = '';
+    if(groups.length === 0){
+      previewArea.innerHTML = '<div class="empty-tip">还没有上传图片</div>';
+      return;
+    }
+
+    groups.forEach((group)=>{
+      const block = document.createElement('div');
+      block.className = 'group-block';
+      block.dataset.groupId = group.id;
+
+      const head = document.createElement('div');
+      head.className = 'group-head';
+
+      const info = document.createElement('div');
+      info.className = 'group-info';
+      info.innerHTML = `
+        <span class="group-size">${group.w > 0 ? group.w + ' × ' + group.h : ''}</span>
+        <span class="group-name">${group.groupLabel || ''}</span>
+        <span class="group-count">${group.items.length} 张</span>
+      `;
+      head.appendChild(info);
+
+      const select = document.createElement('select');
+      select.className = 'group-select';
+      Object.keys(NAME_SCHEMES).forEach(key=>{
+        const opt = document.createElement('option');
+        opt.value = key;
+        opt.textContent = NAME_SCHEMES[key].label;
+        if(key === group.schemeKey) opt.selected = true;
+        select.appendChild(opt);
+      });
+
+      select.addEventListener('change', ()=>{
+        const newKey = select.value;
+        const scheme = NAME_SCHEMES[newKey];
+        group.schemeKey = newKey;
+        group.groupLabel = scheme ? scheme.label : '不命名 / 手动';
+
+        if(scheme && scheme.names.length > 0){
+          group.items.forEach((img, idx)=>{
+            const name = scheme.names[idx % scheme.names.length];
+            img.assignedName = name;
+            img.assignedExt = '.png';
+          });
+        } else {
+          group.items.forEach(img=>{
+            img.assignedName = null;
+            img.assignedExt = null;
+          });
+        }
+
+        buildDisplayGroups();
+        renderAll();
+        updateStatus();
+        updateButtons();
+        log(`✅ 组 ${group.w}×${group.h} 已切换 → ${scheme ? scheme.label : '不命名'}`);
+      });
+
+      head.appendChild(select);
+      block.appendChild(head);
+
+      const inner = document.createElement('div');
+      inner.className = 'group-inner';
+      group.items.forEach(img=>{
+        inner.appendChild(makePreviewItem(img));
+      });
+      block.appendChild(inner);
+      previewArea.appendChild(block);
+    });
+  }
+
+  function makePreviewItem(img){
+    const div = document.createElement('div');
+    div.className = 'preview-item' + (img.id === selectedId ? ' selected' : '');
+    div.dataset.id = img.id;
+
+    const nameText = img.assignedName
+      ? (img.assignedName + (img.assignedExt||''))
+      : '未命名';
+    const badgeClass = img.assignedName ? 'assigned' : 'none';
+    const isDark = isDarkName(img.assignedName || '');
+    const isGen = !!img.isGenerated;
+    const isTrimmed = !!img.trimmed;
+    const isKept = !!img.kept;
+
+    div.innerHTML = `
+      ${isDark ? '<div class="dark-mark">Dark</div>' : ''}
+      ${isGen ? '<div class="gen-mark">复制</div>' : ''}
+      ${isTrimmed ? '<div class="trim-mark">已裁剪</div>' : ''}
+      ${isKept ? '<div class="keep-mark">原尺寸</div>' : ''}
+      <div class="img-wrap"><img src="${img.previewUrl}" alt=""></div>
+      <div class="preview-dim">${img.width} × ${img.height}</div>
+      <div class="preview-orig" title="${img.name}">原: ${img.name.length>20?img.name.slice(0,18)+'…':img.name}</div>
+      <div class="badge ${badgeClass}">${nameText}</div>
+    `;
+    div.addEventListener('click', function(e){
+      e.stopPropagation();
+      onImageClick(img.id);
+    });
+    return div;
+  }
+
+  function onImageClick(id){
+    if(selectedId === null){
+      selectedId = id;
+      const img = images.find(i=>i.id===id);
+      swapHint.classList.add('on');
+      swapHint.textContent = `已选中「${img.assignedName || '未命名'}」，请点击另一张互换`;
+      renderAll();
+      return;
+    }
+    if(selectedId === id){
+      selectedId = null;
+      swapHint.classList.remove('on');
+      renderAll();
+      return;
+    }
+    const a = images.find(i=>i.id===selectedId);
+    const b = images.find(i=>i.id===id);
+    if(!a || !b) return;
+
+    const tmpName = a.assignedName;
+    const tmpExt = a.assignedExt;
+    a.assignedName = b.assignedName;
+    a.assignedExt = b.assignedExt;
+    b.assignedName = tmpName;
+    b.assignedExt = tmpExt;
+
+    selectedId = null;
+    swapHint.classList.remove('on');
+
+    buildDisplayGroups();
+    renderAll();
+    updateStatus();
+    updateButtons();
+    log(`🔄 互换: 「${a.name}」⇄「${b.name}」`);
+  }
+
+  async function addImageFiles(preprocessed){
+    let added = 0;
+    for(const item of preprocessed){
+      try{
+        const {width,height,url} = await getImageSize(item.file);
+        const imgObj = {
+          id: uid(), file: item.file, name: item.file.name, width, height,
+          previewUrl: url,
+          assignedName: item.assignedName || null,
+          assignedExt: item.assignedExt || null,
+          isGenerated: !!item.isGenerated,
+          trimmed: !!item.trimmed,
+          kept: !!item.kept,
+          originalWidth: item.originalWidth || 0,
+          originalHeight: item.originalHeight || 0
+        };
+        images.push(imgObj);
+        added++;
+        await new Promise(r=>setTimeout(r,0));
+      }catch(e){
+        log(`加载失败: ${item.file.name}`,true);
+      }
+    }
+    return added;
+  }
+
+  async function handleImages(files){
+    if(isProcessing) return;
+    isProcessing = true;
+    updateButtons();
+    const list = Array.from(files).filter(f=>f.type.startsWith('image/'));
+    if(!list.length){
+      log('没有有效图片',true);
+      isProcessing = false;
+      updateButtons();
+      return;
+    }
+    if(emptyTip) emptyTip.style.display = 'none';
+    log(`开始处理 ${list.length} 张图片…`);
+
+    try{
+      progressEl.classList.add('on');
+      progressEl.textContent = `透明底检查 0 / ${list.length}`;
+      const trimmedEntries = await trimBatch(list, (cur, total)=>{
+        progressEl.textContent = `透明底检查 ${cur} / ${total}`;
+      });
+      progressEl.textContent = '正在命名…';
+
+      const preprocessed = await preprocessFiles(trimmedEntries);
+      await addImageFiles(preprocessed);
+
+      autoNameAll();
+      buildDisplayGroups();
+      renderAll();
+      updateStatus();
+      updateButtons();
+      log(`✅ 处理完成，共 ${images.length} 张`);
+    }catch(e){
+      log(`处理出错: ${e.message}`, true);
+    }
+
+    progressEl.classList.remove('on');
+    isProcessing = false;
+    updateButtons();
+  }
+
+  async function handleZip(file){
+    if(isProcessing) return;
+    if(!file) return;
+    if(!/\.zip$/i.test(file.name) && file.type !== 'application/zip'){
+      log('请选择 .zip 文件', true);
+      return;
+    }
+    isProcessing = true;
+    updateButtons();
+    progressEl.classList.add('on');
+    progressEl.textContent = '正在读取 ZIP…';
+    if(emptyTip) emptyTip.style.display = 'none';
+
+    try{
+      const arrayBuffer = await file.arrayBuffer();
+      const zip = await JSZip.loadAsync(arrayBuffer);
+
+      const imageEntries = [];
+      zip.forEach((relativePath, zipEntry)=>{
+        if(zipEntry.dir) return;
+        if(isImageFile(zipEntry.name)) imageEntries.push(zipEntry);
+      });
+
+      if(imageEntries.length === 0){
+        log('ZIP 里没有找到图片文件', true);
+        progressEl.classList.remove('on');
+        isProcessing = false;
+        updateButtons();
+        return;
+      }
+
+      log(`ZIP 里发现 ${imageEntries.length} 张图片，开始解压…`);
+      progressEl.textContent = `解压 0 / ${imageEntries.length}`;
+
+      const fileList = [];
+      let done = 0;
+      for(const entry of imageEntries){
+        try{
+          const blob = await entry.async('blob');
+          const fileName = entry.name.split('/').pop();
+          const f = new File([blob], fileName, { type: blob.type || 'image/png' });
+          fileList.push(f);
+        }catch(e){
+          log(`解压失败: ${entry.name}`, true);
+        }
+        done++;
+        progressEl.textContent = `解压 ${done} / ${imageEntries.length}`;
+        await new Promise(r=>setTimeout(r,0));
+      }
+
+      progressEl.textContent = `透明底检查 0 / ${fileList.length}`;
+      const trimmedEntries = await trimBatch(fileList, (cur, total)=>{
+        progressEl.textContent = `透明底检查 ${cur} / ${total}`;
+      });
+      progressEl.textContent = '正在命名…';
+
+      const preprocessed = await preprocessFiles(trimmedEntries);
+      await addImageFiles(preprocessed);
+
+      log(`✅ ZIP 解压完成，共导入 ${images.length} 张`);
+    }catch(e){
+      log(`ZIP 解析失败: ${e.message}`, true);
+    }
+
+    progressEl.classList.remove('on');
+    isProcessing = false;
+    autoNameAll();
+    buildDisplayGroups();
+    renderAll();
+    updateStatus();
+    updateButtons();
+  }
+
+  function updateStatus(){
+    counterEl.textContent = `已上传 ${images.length} 张 · ${groups.length} 组`;
+    const assigned = images.filter(img=>img.assignedName).length;
+    assignInfoEl.textContent = `已命名 ${assigned} / ${images.length} 张`;
+    
+    globalArchive.box = images.filter(img => img.assignedName).map(img => ({
+      name: img.assignedName,
+      ext: normalizeExt(img.assignedExt),
+      blob: img.file
+    }));
+    updateMergeHint(); 
+  }
+  function updateButtons(){
+    const hasImages = images.length > 0;
+    clearBtn.disabled = !hasImages || isProcessing;
+    const allAssigned = images.length > 0 && images.every(img=>img.assignedName && img.assignedExt);
+    downloadBtn.disabled = !(hasImages && allAssigned && !isProcessing);
+  }
+
+  function resetAll(){
+    images.forEach(img=>{ if(img.previewUrl) URL.revokeObjectURL(img.previewUrl); });
+    images = [];
+    groups = [];
+    selectedId = null;
+    previewArea.innerHTML = '<div class="empty-tip" id="emptyTip">还没有上传图片</div>';
+    fileInput.value = '';
+    clearLog();
+    swapHint.classList.remove('on');
+    progressEl.classList.remove('on');
+    globalArchive.box = [];
+    updateStatus();
+    updateButtons();
+    transferDarkStatus.textContent = '未上传';
+    transferDarkStatus.className = 'mini-status';
+    transferDarkInput.value = '';
+    darkThumbsEl.innerHTML = '';
+    zipNameInput.value = '昀昀盒子';
+  }
+
+  async function downloadZip(){
+    if(isProcessing) return;
+    if(images.length === 0){ log('请先上传图片',true); return; }
+    const unnamed = images.filter(img=>!img.assignedName || !img.assignedExt);
+    if(unnamed.length > 0){
+      log(`还有 ${unnamed.length} 张未命名。请调整方案或手动互换`,true);
+      return;
+    }
+
+    let zipBase = (zipNameInput.value || '').trim() || '昀昀盒子';
+    zipBase = zipBase.replace(/[\\/:*?"<>|]/g, '_');
+
+    isProcessing = true;
+    updateButtons();
+    log('开始打包…');
+
+    const zip = new JSZip();
+    let count = 0;
+
+    for(const img of images){
+      const ext = normalizeExt(img.assignedExt);
+      let finalName = img.assignedName + ext;
+      let c = 1;
+      while(zip.file(finalName)){
+        finalName = img.assignedName + `_${c}` + ext;
+        c++;
+      }
+      try{
+        const buf = await img.file.arrayBuffer();
+        zip.file(finalName, buf);
+        count++;
+        log(`  ✓ ${img.name} → ${finalName}`);
+      }catch(e){ log(`读取失败: ${img.name}`,true); }
+    }
+
+    if(count === 0){ log('没有图片加入压缩包',true); isProcessing=false; updateButtons(); return; }
+
+    try{
+      const blob = await zip.generateAsync({type:'blob'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${zipBase}.zip`;
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(()=>URL.revokeObjectURL(url),4000);
+      log(`✅ 打包完成，共 ${count} 张，文件名 ${zipBase}.zip，已开始下载`);
+    }catch(e){ log(`打包失败: ${e.message}`,true); }
+
+    isProcessing = false;
+    updateButtons();
+  }
+
+  async function handleTransferDark(file){
+    if(!file) return;
+    try{
+      const srcFile = file;
+      const {width,height,url} = await getImageSize(srcFile);
+      transferDarkStatus.textContent = `✅ ${width}×${height}，生成 2 张（不裁剪）`;
+      transferDarkStatus.className = 'mini-status';
+
+      const NAMES = ['ChatRoom_Bubble_Text_Receiver_Dark_HL','ChatRoom_Bubble_Text_Receiver_Dark'];
+      for(let i = 0; i < NAMES.length; i++){
+        const newFile = new File([srcFile], NAMES[i] + '.png', { type: 'image/png' });
+        await addImageFiles([{
+          file: newFile,
+          assignedName: NAMES[i],
+          assignedExt: '.png',
+          isGenerated: true,
+          trimmed: false,
+          originalWidth: 0,
+          originalHeight: 0
+        }]);
+      }
+
+      darkThumbsEl.innerHTML = '';
+      for(const name of NAMES){
+        const thumb = document.createElement('div');
+        thumb.className = 'dark-thumb';
+        thumb.innerHTML = `
+          <img src="${url}" alt="">
+          <div class="n">${name}.png</div>
+        `;
+        darkThumbsEl.appendChild(thumb);
+      }
+
+      log(`✅ 夜间模式已复制成 2 张并命名（不裁剪透明底）`);
+      buildDisplayGroups();
+      renderAll();
+      updateStatus();
+      updateButtons();
+    }catch(e){
+      log(`夜间模式处理失败: ${e.message}`, true);
+      transferDarkStatus.textContent = '❌ 处理失败';
+      transferDarkStatus.className = 'mini-status err';
+    }
+  }
+
+  uploadArea.addEventListener('click', e=>{ if(e.target.tagName!=='INPUT') fileInput.click(); });
+  fileInput.addEventListener('change', e=>{
+    const files = Array.from(e.target.files || []);
+    if(files.length){
+      const zipFile = files.find(f=>/\.zip$/i.test(f.name));
+      if(zipFile) handleZip(zipFile);
+      else handleImages(files);
+    }
+    fileInput.value='';
+  });
+
+  uploadArea.addEventListener('dragover', e=>{ e.preventDefault(); uploadArea.style.borderColor='var(--blue)'; });
+  uploadArea.addEventListener('dragleave', ()=>{ uploadArea.style.borderColor='var(--upload-border)'; });
+  uploadArea.addEventListener('drop', e=>{
+    e.preventDefault(); uploadArea.style.borderColor='var(--upload-border)';
+    if(e.dataTransfer.files.length){
+      const list = Array.from(e.dataTransfer.files);
+      const zip = list.find(f=>/\.zip$/i.test(f.name));
+      if(zip) handleZip(zip);
+      else handleImages(list);
+    }
+  });
+
+  transferDarkInput.addEventListener('change', e=>{
+    if(e.target.files.length) handleTransferDark(e.target.files[0]);
+    transferDarkInput.value = '';
+  });
+
+  clearBtn.addEventListener('click', resetAll);
+  downloadBtn.addEventListener('click', downloadZip);
+
+  resetAll();
+
+  // ========================================================
+  // 面板 2：昀昀图标一键 DIY
+  // ========================================================
+  const diyFileInput = document.getElementById('diyFileInput');
+  const diyUploadArea = document.getElementById('diyUploadArea');
+  const diyListBox = document.getElementById('diyListBox');
+  const diyImgCount = document.getElementById('diyImgCount');
+  const diyOutputCount = document.getElementById('diyOutputCount');
+  const diyClearBtn = document.getElementById('diyClearBtn');
+  const diyProcessBtn = document.getElementById('diyProcessBtn');
+  const diyProgress = document.getElementById('diyProgress');
+  const diyX2Toggle = document.getElementById('diyX2Toggle');
+  const diyX2Size = document.getElementById('diyX2Size');
+  const diyX3Size = document.getElementById('diyX3Size');
+  const diyFolderName = document.getElementById('diyFolderName');
+
+  let diyImages = [];
+
+  function diyLog(msg){
+    const logEl2 = document.getElementById('log');
+    if(logEl2){
+      const t = new Date().toLocaleTimeString('zh-CN',{hour12:false});
+      logEl2.innerHTML += `[${t}] 📌 [DIY] ${msg}\n`;
+      logEl2.scrollTop = logEl2.scrollHeight;
+    }
+  }
+
+  function diyUpdateStatus(){
+    diyImgCount.textContent = diyImages.length;
+    const total = diyImages.length > 0 ? 2348 : 0;
+    diyOutputCount.textContent = total;
+    diyProcessBtn.disabled = diyImages.length === 0;
+    diyClearBtn.disabled = diyImages.length === 0;
+    updateMergeHint();
+  }
+
+  function diyRenderList(){
+    if(diyImages.length === 0){
+      diyListBox.innerHTML = '<div class="empty-tip">还没有导入图片</div>';
+      diyUpdateStatus();
+      return;
+    }
+    const frag = document.createDocumentFragment();
+    diyImages.forEach((img, idx)=>{
+      const item = document.createElement('div');
+      item.className = 'list-item';
+      item.style.cssText = 'display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 12px;background:var(--item-bg);border-radius:12px;margin-bottom:6px;border-left:4px solid var(--blue);font-size:.7rem;';
+      item.innerHTML = `
+        <div style="color:var(--text);word-break:break-all;flex:1;line-height:1.4;">${idx+1}. ${img.name}</div>
+        <div style="color:var(--blue);font-weight:700;flex-shrink:0;font-size:.62rem;">${img.width}×${img.height}</div>
+        <div class="diy-remove" data-id="${img.id}" style="color:#dc2626;font-weight:700;cursor:pointer;flex-shrink:0;padding:2px 6px;border-radius:8px;">✕</div>
+      `;
+      frag.appendChild(item);
+    });
+    diyListBox.innerHTML = '';
+    diyListBox.appendChild(frag);
+    diyListBox.querySelectorAll('.diy-remove').forEach(btn=>{
+      btn.addEventListener('click', e=>{
+        const id = e.target.dataset.id;
+        diyImages = diyImages.filter(i=>i.id !== id);
+        diyRenderList();
+        diyLog('已移除一张图片');
+      });
+    });
+    diyUpdateStatus();
+  }
+
+  function diyGetImageSize(file){
+    return new Promise((resolve, reject)=>{
+      const url = URL.createObjectURL(file);
+      const img = new Image();
+      img.onload = ()=>{ resolve({width:img.naturalWidth,height:img.naturalHeight}); URL.revokeObjectURL(url); };
+      img.onerror = ()=>{ URL.revokeObjectURL(url); reject(new Error('加载失败')); };
+      img.src = url;
+    });
+  }
+
+  function diyResizeImage(blob, targetW, targetH){
+    return new Promise((resolve, reject)=>{
+      const url = URL.createObjectURL(blob);
+      const img = new Image();
+      img.onload = ()=>{
+        try{
+          const ow = img.naturalWidth, oh = img.naturalHeight;
+          if(!ow || !oh){ reject(new Error('尺寸无效')); return; }
+          const scale = Math.min(targetW / ow, targetH / oh);
+          const nw = Math.max(1, Math.round(ow * scale));
+          const nh = Math.max(1, Math.round(oh * scale));
+          const canvas = document.createElement('canvas');
+          canvas.width = nw; canvas.height = nh;
+          const ctx = canvas.getContext('2d');
+          ctx.clearRect(0,0,nw,nh);
+          ctx.imageSmoothingEnabled = true;
+          ctx.imageSmoothingQuality = 'high';
+          ctx.drawImage(img, 0, 0, nw, nh);
+          canvas.toBlob(b=>{
+            URL.revokeObjectURL(url);
+            if(b) resolve(b); else reject(new Error('转换失败'));
+          }, 'image/png');
+        }catch(e){ URL.revokeObjectURL(url); reject(e); }
+      };
+      img.onerror = ()=>{ URL.revokeObjectURL(url); reject(new Error('加载失败')); };
+      img.src = url;
+    });
+  }
+
+  function diyParseSize(str){
+    if(!str) return null;
+    const m = str.replace(/\s/g,'').match(/^(\d+)[*xX×](\d+)$/);
+    if(!m) return null;
+    return { w: parseInt(m[1],10), h: parseInt(m[2],10) };
+  }
+
+  async function diyHandleImages(files){
+    const list = Array.from(files || []);
+    if(!list.length) return;
+    for(const file of list){
+      if(!file.type.startsWith('image/')) continue;
+      try{
+        const { width, height } = await diyGetImageSize(file);
+        diyImages.push({ id: Date.now()+'_'+Math.random().toString(36).slice(2,8), name: file.name, blob: file, width, height });
+        diyLog(`📥 ${file.name} (${width}×${height})`);
+      }catch(err){ diyLog(`读取失败: ${file.name}`); }
+    }
+    diyRenderList();
+    
+    globalArchive.diy = diyImages.map(img => ({ name: img.name, blob: img.blob })); // ★ 保留原名
+    updateMergeHint();
+  }
+
+  async function diyProcessAll(){
+    if(diyImages.length === 0){ alert('请先导入图片'); return; }
+    const x2Dim = diyParseSize(diyX2Size.value) || { w: 60, h: 60 };
+    const x3Dim = diyParseSize(diyX3Size.value) || { w: 70, h: 70 };
+    const useX2 = diyX2Toggle.checked;
+    const folder = (diyFolderName.value || 'Assets').replace(/[\\/:*?"<>|]/g, '_');
+
+    diyProgress.classList.add('on');
+    diyProgress.textContent = '准备中…';
+    diyProcessBtn.disabled = true;
+    diyClearBtn.disabled = true;
+
+    const zip = new JSZip();
+    const totalAll = DIY_NAME_LIST.length;
+    let totalFiles = 0;
+
+    diyProgress.textContent = '预处理图片中…';
+    const prepared = [];
+    for(let i = 0; i < diyImages.length; i++){
+      const img = diyImages[i];
+      let buf3x;
+      try{
+        const blob3x = await diyResizeImage(img.blob, x3Dim.w, x3Dim.h);
+        buf3x = await blob3x.arrayBuffer();
+      }catch(e){
+        buf3x = await img.blob.arrayBuffer();
+      }
+      let buf2x = buf3x;
+      if(useX2){
+        try{
+          const blob2x = await diyResizeImage(img.blob, x2Dim.w, x2Dim.h);
+          buf2x = await blob2x.arrayBuffer();
+        }catch(e){ buf2x = buf3x; }
+      }
+      prepared.push({ img, buf2x, buf3x });
+      await new Promise(r=>setTimeout(r,0));
+    }
+
+    globalArchive.diy = [];
+
+    for(let i = 0; i < DIY_NAME_LIST.length; i++){
+      const name = DIY_NAME_LIST[i];
+      const p = prepared[i % prepared.length];
+      const is2x = name.includes('@2x');
+      const buf = (is2x && useX2) ? p.buf2x : p.buf3x;
+      
+      // ★ 直接用 name（不去后缀，直接放进去）
+      zip.file(`${folder}/${name}`, buf);
+      totalFiles++;
+
+      try{
+        const blobForShare = new Blob([buf], { type: 'image/png' });
+        globalArchive.diy.push({ name: name, blob: blobForShare });
+      }catch(e){}
+
+      if(i % 200 === 0){
+        diyProgress.textContent = `已分配 ${i+1} / ${totalAll} 个文件…`;
+        await new Promise(r=>setTimeout(r,0));
+      }
+    }
+
+    diyProgress.textContent = '正在压缩打包…';
+    diyLog(`清单 ${DIY_NAME_LIST.length} 行，共 ${diyImages.length} 张图片轮流分配，共 ${totalAll} 个文件，开始打包…`);
+
+    try{
+      const blob = await zip.generateAsync({ type:'blob', compression:'STORE' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${folder}.zip`;
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(()=>URL.revokeObjectURL(url), 5000);
+      diyLog(`✅ 打包完成！共 ${totalFiles} 个文件`);
+    }catch(e){ diyLog(`打包失败: ${e.message}`); }
+
+    diyProgress.classList.remove('on');
+    diyProcessBtn.disabled = false;
+    diyClearBtn.disabled = false;
+    updateMergeHint();
+  }
+
+  diyUploadArea.addEventListener('click', e=>{ if(e.target.tagName !== 'INPUT') diyFileInput.click(); });
+  diyFileInput.addEventListener('change', e=>{
+    if(e.target.files.length) diyHandleImages(e.target.files);
+    diyFileInput.value = '';
+  });
+  diyUploadArea.addEventListener('dragover', e=>{ e.preventDefault(); diyUploadArea.style.borderColor = 'var(--blue)'; });
+  diyUploadArea.addEventListener('dragleave', ()=>{ diyUploadArea.style.borderColor = 'var(--upload-border)'; });
+  diyUploadArea.addEventListener('drop', e=>{
+    e.preventDefault();
+    diyUploadArea.style.borderColor = 'var(--upload-border)';
+    if(e.dataTransfer.files.length) diyHandleImages(e.dataTransfer.files);
+  });
+  diyClearBtn.addEventListener('click', ()=>{
+    diyImages = [];
+    diyRenderList();
+    globalArchive.diy = [];
+    updateMergeHint();
+    diyLog('已清空 DIY 图片');
+  });
+  diyProcessBtn.addEventListener('click', diyProcessAll);
+  diyRenderList();
+  diyUpdateStatus();
+
+  // ========================================================
+  // 合并打包 (★ 终极修复：自动处理 DIY 生成 2348 张，且保留文件自带后缀)
+  // ========================================================
+  document.getElementById('mergeExportBtn').addEventListener('click', async ()=>{
+    const hasDiyRaw = diyImages.length > 0; 
+    const hasDiyProcessed = globalArchive.diy.length > 0;
+    const hasBox = globalArchive.box.length > 0;
+
+    if(!hasDiyRaw && !hasDiyProcessed && !hasBox){
+      alert('还没有导入任何图片。请先在任一工具里上传图片。');
+      return;
+    }
+    
+    const btn = document.getElementById('mergeExportBtn');
+    btn.disabled = true;
+    const oldText = btn.textContent;
+    
+    const zip = new JSZip();
+    let totalCount = 0;
+
+    try {
+      let finalDiyList = globalArchive.diy; 
+      
+      if (hasDiyRaw) {
+        btn.textContent = '正在后台生成 2348 个 Assets 文件...';
+        const x2Dim = diyParseSize(diyX2Size.value) || { w: 60, h: 60 };
+        const x3Dim = diyParseSize(diyX3Size.value) || { w: 70, h: 70 };
+        const useX2 = diyX2Toggle.checked;
+        
+        const prepared = [];
+        for(let i = 0; i < diyImages.length; i++){
+          const img = diyImages[i];
+          let buf3x;
+          try {
+            const blob3x = await diyResizeImage(img.blob, x3Dim.w, x3Dim.h);
+            buf3x = await blob3x.arrayBuffer();
+          } catch(e) { buf3x = await img.blob.arrayBuffer(); }
+          
+          let buf2x = buf3x;
+          if(useX2){
+            try {
+              const blob2x = await diyResizeImage(img.blob, x2Dim.w, x2Dim.h);
+              buf2x = await blob2x.arrayBuffer();
+            } catch(e) { buf2x = buf3x; }
+          }
+          prepared.push({ buf2x, buf3x });
+          await new Promise(r=>setTimeout(r,0));
+        }
+
+        finalDiyList = [];
+        for(let i = 0; i < DIY_NAME_LIST.length; i++){
+          const name = DIY_NAME_LIST[i];
+          const p = prepared[i % prepared.length];
+          const is2x = name.includes('@2x');
+          const buf = (is2x && useX2) ? p.buf2x : p.buf3x;
+          
+          finalDiyList.push({ name: name, blob: new Blob([buf], {type: 'image/png'}) });
+        }
+      }
+
+      if (finalDiyList.length > 0) {
+        btn.textContent = `正在将 Assets 文件写入压缩包...`;
+        for(const item of finalDiyList){
+          const buf = await item.blob.arrayBuffer();
+          // ★ 直接用 item.name 作为文件名，因为 item.name 已经包含了后缀
+          let finalName = 'Assets/' + item.name;
+          let c = 1;
+          while(zip.file(finalName)){
+            // 如果重名，利用正则插在扩展名前
+            const extIdx = item.name.lastIndexOf('.');
+            const base = item.name.slice(0, extIdx);
+            const ext = item.name.slice(extIdx);
+            finalName = 'Assets/' + base + `_${c}` + ext;
+            c++;
+          }
+          zip.file(finalName, buf);
+          totalCount++;
+        }
+      }
+
+      if (hasBox) {
+        btn.textContent = `正在将盒子图片写入根目录...`;
+        for(const item of globalArchive.box){
+          const buf = await item.blob.arrayBuffer();
+          let finalName = item.name + item.ext;
+          let c = 1;
+          while(zip.file(finalName)){
+            finalName = item.name + `_${c}` + item.ext;
+            c++;
+          }
+          zip.file(finalName, buf);
+          totalCount++;
+        }
+      }
+
+      btn.textContent = '正在压缩并下载...';
+      let zipBase = (zipNameInput.value || '').trim() || '合并打包';
+      zipBase = zipBase.replace(/[\\/:*?"<>|]/g, '_');
+
+      const blob = await zip.generateAsync({type:'blob'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${zipBase}.zip`;
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(()=>URL.revokeObjectURL(url), 4000);
+      
+      alert(`✅ 合并打包成功！\n根目录：${globalArchive.box.length} 张\nAssets目录：${finalDiyList.length} 张`);
+      
+    } catch(e) {
+      alert('合并打包失败: ' + e.message);
+    }
+
+    btn.textContent = oldText;
+    btn.disabled = false;
+    updateMergeHint();
+  });
+})();
+
+// DIY 清单（原封不动）
+const DIY_NAME_LIST = [
+"icons_filled_mike2@2x.png","icons_outlined_previous2@2x.png","icons_outlined_like_finder@2x.png","menu_filled@2x.png","icons_filled_delete@2x.png","AS_QQ@2x.png","pencil_rectangle_filled@2x.png","icons_finder_outlined_play@2x.png","icons_filled_more@2x.png","icons_regular_game@2x.png","webview_ting_entry@2x.png","icons_outlined_stickerAlbum@2x.png","icons_finder_filled_play@2x.png","fileicon_pages_icon@2x.png","icons_regular_text@2x.png","icons_filled_like_finder@2x.png","doc_filled_16@2x.png","icon_filled_taskbar_entry_music@2x.png","person_list_regular@2x.png","icons_filled_mini_program2@2x.png","ReadVerified_icon@2x.png","AS_safari@2x.png","trash_on_regular@2x.png","icons_filled_news@2x.png","ui-resources_checkbox_selected_fill@2x.png","icons_filled_zoomout@2x.png","icons_filled_groupmessage@2x.png","cameraEmoticonCreateButton@2x.png","icons_filled_back3@2x.png","refresh@2x.png","icons_filled_favorites@2x.png","icons_outlined_delete@2x.png","doc_outlined_16@2x.png","fileicon_folder48@2x.png","icons_outlined_channels_LIVE@2x.png","previous_regular@2x.png","icons_outlined_close2@2x.png","favorites_outlined_colorful@2x.png","icons_outlined_group_detail@2x.png","common_bubble_arrow_down@2x.png","icons_filled_video_phone@2x.png","WebView_Back_Shadow@2x.png","icons_outlined_othersticker@2x.png","icons_outlined_video_phone@2x.png","icons_outlined_volume_off@2x.png","new_gift_filled_icon@2x.png","news_regular@2x.png","download_regular@2x.png","favorites_filled_colorful@2x.png","phone_rectangle_filled@2x.png","doc_filled@2x.png","icons_outlined_camera_switch@2x.png","icons_outlined_time@2x.png","transfer_filled@2x.png","fileicon_zip_icon_icon@2x.png","icons_filled_subscriptions@2x.png","icons_outlined_grouppay@2x.png","dot_3_regular@2x.png","fileicon_unknown_icon_light@2x.png","icons_outlined_menu@2x.png","share_regular@2x.png","icons_outlined_note@2x.png","fileicon_photo_icon_light@2x.png","picture_filled@2x.png","icons_filled_grouptool@2x.png","icons_outlined_share@2x.png","ContactIndexShape@2x.png","lock_off_regular@2x.png","icons_outlined_mobile_contacts@2x.png","icons_outlined_channels_share@2x.png","icons_outlined_volume_up@2x.png","icons_outlined_float_window_on@2x.png","icons_outlined_top@2x.png","exclamation_mark_triangle_regular@2x.png","compose_article_regular@2x.png","icons_outlined_unlock@2x.png","icons_outlined_bellring_on@2x.png","bell_on_filled@2x.png","person_list_filled@2x.png","live_like_anchor@2x.png","icons_outlined_arrow_down_2@2x.png","lock_filled@2x.png","icons_outlined_live_mini_window@2x.png","icon_filled_solitaire@2x.png","clock_regular@2x.png","icon_filled_brand_head@2x.png","gear_regular@2x.png","fileicon_zip@2x.png","C2C_Image_Download_Cancel@2x.png","icons_outlined_error@2x.png","icons_filled_transfer2@2x.png","icons_outlined_download@2x.png","icons_outlined_news@2x.png","cardholder_regular@2x.png","icons_regular_grouptool@2x.png","icons_outlined_channels_bulletscreen_stop@2x.png","fileicon_word@2x.png","qqEmojiTips@2x.png","icons_filled_group_detail@2x.png","AS_QQbrowser@2x.png","icons_filled_othersticker@2x.png","icons_filled_takephoto_nor@2x.png","Contact_Chatonlyfriends@2x.png","icons_outlined_max_window@2x.png","add_friend_icon_brand_service@2x.png","icons_filled_like_full@2x.png","SenderImageNodeMask@2x.png","icons_outlined_multiple_choice@2x.png","icons_outlined_more@2x.png","icons_outlined_music@2x.png","icons_filled_delete2@2x.png","icons_outlined_delete_on@2x.png","icons_outlined_colorful_game@2x.png","add_friend_icon_addgroup@2x.png","heart_filled@2x.png","icons_outlined_moment@2x.png","icons_outlined_call_end@2x.png","icons_outlined_keyboard@2x.png","exclamation_mark_circle_regular@2x.png","picture_regular@2x.png","icon_negative_feedback@2x.png","camera_filled@2x.png","add_friend_icon_offical@2x.png","fileicon_pages@2x.png","icons_filled_voiceinput_white@2x.png","icons_filled_unlock@2x.png","icons_filled_at@2x.png","tag_regular@2x.png","icons_filled_menu@2x.png","Action_Share@2x.png","lqt_planitemcell_more@2x.png","icons_outlined_groupmessage@2x.png","icons_outlined_contacts@2x.png","call_off_filled@2x.png","icons_filled_top@2x.png","ui-resource_back@2x.png","icons_filled_img_photowall@2x.png","icon_filled_brand_head_dark@2x.png","bubble_regular@2x.png","quick_send_weapp_msg_default_image@2x.png","Action_Moments@2x.png","icons_filled_close@2x.png","icons_outlined_new_HtoV@2x.png","icons_regular_quote@2x.png","play_regular@2x.png","xmark_regular@2x.png","compose_article_filled@2x.png","icons_filled_ting_finder_entry_music@2x.png","icons_outlined_previous@2x.png","call_off_regular@2x.png","pencil_rectangle_regular@2x.png","icons_outlined_brand_totext@2x.png","icon_voice_playing2@2x.png","doc_regular@2x.png","icons_filled_AddSticker@2x.png","icons_outlined_voiceinput_white@2x.png","icons_outlined_pay_check_mark@2x.png","FriendsSendsPicturesArtworkNIcon@2x.png","icons_filled_done2@2x.png","icons_filled_stickerAlbum@2x.png","fileicon_word_icon@2x.png","check_mark_filled@2x.png","gear_filled@2x.png","icons_outlined_wechatpay@2x.png","icons_filled_videocall@2x.png","icons_filled_moment@2x.png","icons_filled_previous@2x.png","icons_outlined_volume_down@2x.png","fileicon_mask@2x.png","icons_filled_transfer@2x.png","icons_outlined_font@2x.png","icons_regular_video_phone@2x.png","icons_filled_setting@2x.png","icons_outlined_live_nearby@2x.png","icons_filled_card@2x.png","AlbumTopArrow@2x.png","icons_filled_device@2x.png","icons_filled_bell_ring_on@2x.png","icons_outlined_official_accounts@2x.png","icons_outlined_transfer2@2x.png","icons_filled_album@2x.png","video_filled@2x.png","tabbar_badge@2x.png","icons_filled_volume_off@2x.png","heart_regular@2x.png","display_filled@2x.png","icons_filled_mike@2x.png","icons_outlined_copy@2x.png","enterprisewechat_filled_colorful@2x.png","icons_filled_mini_program@2x.png","icon_outlined_taskbar_entry_music@2x.png","icons_filled_volume_down@2x.png","video_regular@2x.png","icons_outlined_done2@2x.png","icons_filled_contacts@2x.png","icons_outlined_pay@2x.png","icons_outlined_like_full@2x.png","icons_filled_finder@2x.png","lock_off_filled@2x.png","icons_outlined_comment@2x.png","favorites_filled@2x.png","icons_outlined_miniprogram@2x.png","icons_outlined_find_content@2x.png","icons_filled_miniprogram@2x.png","icons_outlined_sort@2x.png","icons_filled_call@2x.png","icons_filled_multiple_choice@2x.png","Contact_Icon_Special_Attention_Me@2x.png","fileicon_excel_icon@2x.png","add_friend_icon_invite@2x.png","icons_filled_nearby_wxa@2x.png","icons_outlined_info@2x.png","radar_filled@2x.png","fileicon_unknown_icon_light_icon@2x.png","icons_outlined_takephoto_nor@2x.png","icon_album_regular@2x.png","news_filled@2x.png","icons_outlined_slider_indicator@2x.png","icons_outlined_close@2x.png","exclamation_mark_circle_filled@2x.png","icons_filled_cards&offers@2x.png","icons_outlined_img_photowall@2x.png","icons_outlined_refresh@2x.png","icons_outlined_text@2x.png","bell_on_regular@2x.png","icons_filled_keyboard@2x.png","icons_filled_call_end@2x.png","icons_filled_done@2x.png","person_tie_regular@2x.png","dot_3_filled@2x.png","check_mark_regular@2x.png","icons_outlined_voice_input@2x.png","icons_outlined_multitask@2x.png","icons_outlined_game@2x.png","EmoticonFocus@2x.png","icons_outlined_cloud@2x.png","fileicon_mask_icon@2x.png","icons_outlined_live_mini_window_light@2x.png","plugins_FriendNotify@2x.png","star_regular@2x.png","icons_outlined_display@2x.png","icon_stick@2x.png","c2c_overtime_icon@2x.png","weapp_bellring_off@2x.png","fileicon_pdf@2x.png","icons_filled_download@2x.png","radar_regular@2x.png","icons_outlined_stickychat@2x.png","quick_send_weapp_msg_bubble@2x.png","icons_outlined_finder@2x.png","trash_on_filled@2x.png","icons_outlined_new_mini_window@2x.png","icons_outlined_live@2x.png","folder_regular@2x.png","icons_regular_contacts@2x.png","icons_filled_lock@2x.png","favorites_regular@2x.png","bubble_filled@2x.png","live_icons_clear_window_new@2x.png","enterprisewechat_outlined_colorful@2x.png","icons_filled_chatbox@2x.png","icons_filled_wechatpay@2x.png","icons_filled_comment_full@2x.png","icons_filled_refresh@2x.png","icons_filled_previous2@2x.png","icons_filled_qr_code@2x.png","icons_outlined_location@2x.png","icons_outlined_biz_arrow_down@2x.png","fileicon_light_icon@2x.png","icons_filled_folder@2x.png","display_regular@2x.png","icons_outlined_add_friends@2x.png","icons_filled_pay@2x.png","icons_regular_pay@2x.png","icons_outlined_camera@2x.png","icons_outlined_pencil@2x.png","icons_regular_pencil@2x.png","play_circle_regular@2x.png","icons_outlined_comment_full@2x.png","icons_outlined_call@2x.png","live_icon@2x.png","icons_filled_add_friends@2x.png","Action_qzone@2x.png","GameCenterSearchBtn@2x.png","Add_emoticon_button_nor@2x.png","ReceiverImageNodeMask@2x.png","fileicon_light@2x.png","icons_filled_error3@2x.png","icons_outlined_at@2x.png","icon_album_filled@2x.png","previous_filled@2x.png","play_circle_filled@2x.png","icons_filled_share@2x.png","icons_outlined_play@2x.png","icons_filled_makesticker@2x.png","icons_outlined_delete_emoji@2x.png","icon_outlined_solitaire@2x.png","icons_filled_miniwindow@2x.png","icons_outlined_cards&offers@2x.png","icons_outlined_card@2x.png","icon_voice_playing1@2x.png","pay_regular@2x.png","icons_filled_bluetooth@2x.png","favorites_regular_colorful@2x.png","icons_outlined_mini_program2@2x.png","icons_outlined_display_lock@2x.png","phone_rectangle_regular@2x.png","icons_outlined_icloud@2x.png","icons_outlined_makesticker@2x.png","icons_outlined_stickychat_dark@2x.png","Contact_icon_ContactTag@2x.png","menu_regular@2x.png","cardholder_filled@2x.png","icons_outlined_chatbox@2x.png","icons_outlined_approve@2x.png","call_on_regular@2x.png","common_bubble_main_part@2x.png","icons_outlined_favorites@2x.png","icons_outlined_mike@2x.png","icons_filled_copy@2x.png","icons_outlined_ting_finder_entry_music@2x.png","icon_outlined_listen@2x.png","icons_outlined_AddSticker@2x.png","icon_voice_playing3@2x.png","icons_outlined_setting@2x.png","icons_filled_camera_switch@2x.png","fileicon_excel@2x.png","icons_outlined_quote@2x.png","pay_filled@2x.png","person_tie_filled@2x.png","icons_regular_news@2x.png","icons_filled_pencil@2x.png","share_filled@2x.png","icons_filled_camera@2x.png","icons_filled_livephoto@2x.png","icons_outlined_folder@2x.png","keyboard_circle_regular@2x.png","avatar_dotline_add_bg@2x.png","weapp_capsule_exit@2x.png","fileicon_zip_icon@2x.png","icons_outlined_listen_later@2x.png","icons_filled_live@2x.png","download_filled@2x.png","icons_outlined_brand_tomenu@2x.png","keyboard_circle_filled@2x.png","Action_Sheet_Fav_New@2x.png","folder_filled@2x.png","icons_outlined_mike2@2x.png","icon_outlined_brand_star@2x.png","fileicon_photo_icon_dark@2x.png","icons_outlined_lock@2x.png","call_on_filled@2x.png","camera_regular@2x.png","fileicon_number@2x.png","exclamation_mark_triangle_filled@2x.png","icons_outlined_nearby@2x.png","icons_filled_max_window@2x.png","icons_filled_text@2x.png","icons_outlined_bell_ring_on@2x.png","icons_outlined_colorful_menu_browser@2x.png","icons_regular_album@2x.png","fileicon_pdf_icon@2x.png","weapp_capsule_more@2x.png","fileicon_pdf_icon_icon@2x.png","icons_outlined_back3@2x.png","icons_outlined_channels_favorites@2x.png","c2c_hongbao_icon_hk@2x.png","icons_outlined_colorful_game_dark@2x.png","icons_filled_comment@2x.png","icons_outlined_done@2x.png","icons_outlined_like_1.5pt@2x.png","gift_filled_icon@2x.png","transfer_regular@2x.png","icons_outlined_text_8@2x.png","lock_regular@2x.png","icons_outlined_grouptool@2x.png","icons_filled_game@2x.png","icons_outlined_mini_program@2x.png","DefaultHead@2x.png","icons_filled_volume_up@2x.png","icons_filled_link@2x.png","icons_filled_large_image@2x.png","icons_outlined_square_play@2x.png","ui-resources_checkbox_selected@2x.png","question_mark_circle_regular@2x.png","icons_tl_medium_camera@2x.png","Hongbao_Icon@2x.png","livephoto_on_filled@2x.png","fileicon_unknown_icon_dark@2x.png","icons_filled_specialplay@2x.png","weapp_icon_close@2x.png","icon_triangle@2x.png","icons_outline_todo-square@2x.png","icons_outlined_double_fire_lock@2x.png","icons_filled_activity@2x.png","live_filled_proof@2x.png","icons_outlined_fire@2x.png","icons_survey_like@2x.png","insurance_outlined@2x.png","icons_outlined_large_image@2x.png","icons_outlined_device_mac_large@2x.png","fileicon_zip120@2x.png","icons_outlined_airpla@2x.png","sdgd@2x.png","icons_filled_sight_play@2x.png","icons_filled_open@2x.png","icons_filled_song@2x.png","AlbumAddQQSpaceBigHL@2x.png","icons_outlined_tag@2x.png","icons_filled_help@2x.png","icons_outlined_finder_listen@2x.png","icon_outlined_search_arrow_down@2x.png","icons_filled_wn_choose@2x.png","note_filled@2x.png","star_3_line_regular@2x.png","icons_filled_finder_red_envelope@2x.png","icons_outlined_tag_fav@2x.png","Icons_outlined_format@2x.png","mike_on_filled@2x.png","AlbumLikeSmall@2x.png","icons_filled_color_favorites@2x.png","ting_profile_1002@2x.png","live_minimize_screen@2x.png","icons_outlined_local_network@2x.png","AlbumReflashIcon@2x.png","icons_outlined_channels_good@2x.png","icons_filled_call_video@2x.png","icons_webview_custom_menu_pdd_index@2x.png","player_volume_dot@2x.png","icon_outlined_mark_as_unread@2x.png","transh_off_filled@2x.png","fileicon_txt@2x.png","xmark_circle_regular@2x.png","icons_outlined_channels_favorites_cell@2x.png","fileicon_ppt_icon@2x.png","fileicon_music_icon@2x.png","fileicon_music120@2x.png","ChatRoom_Bubble_Voice_Sender_Playing3@2x.png","icons_filled_like_group@2x.png","convert_to_text_filled@2x.png","icons_outlined_clip@2x.png","Action_Moments_Dark@2x.png","airplay_regular@2x.png","icons_add_expression@2x.png","empty_album_music@2x.png","channels_regular@2x.png","mediaPreviewPlay@2x.png","arrow_double_regular@2x.png","icons_filled_previous_medium@2x.png","icons_finder_rotate@2x.png","icons_filled_photo_wall@2x.png","icons_finder_new_minimize@2x.png","arrow_up_circle@2x.png","MessageSendFail@2x.png","max_window_filled@2x.png","live_icons_filled_bean@2x.png","icons_live_new_main_common@2x.png","AlbumAddQQSpaceBig@2x.png","icons_filled_retract@2x.png","fileicon_xls120@2x.png","icons_outlined_channels_comment_stop@2x.png","icons_filled_minimizewindow@2x.png","incos_filled_error4@2x.png","icons_outlined_add3@2x.png","icon_add_more_friends_brand_service@2x.png","icons_outlined_at_new@2x.png","weapp_menu_add_to_desktop@2x.png","at_filled@2x.png","dot_3_circle_regular@2x.png","icons_filled_feed_promotion@2x.png","HongBao_Close_Image_HL@2x.png","icon_filled_taskbar_entry_audio@2x.png","icons_filled_translated_icon@2x.png","finder_arrow_right_medium@2x.png","icons_filled_finder_arrow_down@2x.png","C2C_AA_Icon_3_Normal@2x.png","arrow_left_circle_filled@2x.png","icons_filled_colorful_man@2x.png","icons_filled_author_like_textstate@2x.png","icons_filled_tag@2x.png","icons_outlined_avatar@2x.png","fileicon_voice_icon_light@2x.png","weapp_bell_off@2x.png","icons_outlined_help@2x.png","Icons_Outlined_DelEmoji@2x.png","icons_outlined_promotion@2x.png","icons_outlined_channels_good_cell@2x.png","video_clip@2x.png","player_volume_muted@2x.png","coin5@2x.png","Fighting_GoldIcon@2x.png","DefaultProfileHead_phone@2x.png","icons_outlined_addfriends@2x.png","wc_card_coupon@2x.png","Icons_outlined_todo@2x.png","recent_forwardred_delete@2x.png","livephoto_play_filled@2x.png","HeadImageBorderClick@2x.png","icons_filled_outlined_like@2x.png","eyes_off_filled@2x.png","icons_filled_notfriends@2x.png","icons_tl_medium_magnifying_glass@2x.png","icons_outlined_finder_profile_like@2x.png","icons_outlined_manage@2x.png","scan_torch_hl@2x.png","radio_checkbox_selected@2x.png","icons_filled_tv@2x.png","icons_outlined_link@2x.png","weapp_icon_maximize@2x.png","icons_filled_record_bg@2x.png","icons_filled_cellphone@2x.png","icons_filled_nearby_hot@2x.png","finder_favorites_regular@2x.png","ProfileHeadImageBorder@2x.png","subscriptions_regular@2x.png","live_icons_filled_report_problem@2x.png","icons_filled_wish@2x.png","icons_filled_voice2@2x.png","note_regular@2x.png","link_egular@2x.png","FindFriendView_Setting_Arrow@2x.png","pause_filled@2x.png","icon_filled_brand_followed@2x.png","icons_outlined_add-friends@2x.png","icons_webview_custom_menu_pdd_profile@2x.png","info_circle_filled_security_verify@2x.png","Action_JD_categories@2x.png","fileicon_keynote_icon@2x.png","Action_JD_member@2x.png","du@2x.png","Action_JD_profile@2x.png","icons_checkbox_unselected@2x.png","Action_JD_cart@2x.png","live_tips_enlarge@2x.png","heart_off_regular@2x.png","icons_filled_small_image@2x.png","icons_filled_finder_fire@2x.png","icons_filled_email@2x.png","plus_regular@2x.png","icons_outlined_small_image@2x.png","at_regular@2x.png","icons_filled_colorful_female@2x.png","icons_outline_todo-done@2x.png","icons_filled_subtitle_on@2x.png","icon_outlined_maximize@2x.png","icons_filled_call_good@2x.png","Miniprogram_Icon_DefaultDM@2x.png","icons_outlined_live_pip_window2@2x.png","picSearch_special@2x.png","icons_outlined_transfer_ultron@2x.png","icons_filled_more2@2x.png","brand_live_arrow_icon@2x.png","icons_outlined_channel@2x.png","icons_outlined_mike3@2x.png","finder_thumb_medium@2x.png","icons_filled_wechat_out@2x.png","icons_outlined_min_window@2x.png","icons_filled_clip@2x.png","picSearch_medium@2x.png","icons_outlined_groupdetail@2x.png","mp_comment_delete@2x.png","ChatRoom_Bubble_Voice_Receiver_Playing3@2x.png","icons_outlined_copypath@2x.png","icons_finder_minimize@2x.png","icons_outlined_voice2@2x.png","ad_finder_link_icon@2x.png","icons_filled_cutie@2x.png","play_filled@2x.png","icons_filled_live_photo@2x.png","icons_outlined_pause@2x.png","Action_JD_index@2x.png","live_icons_music_largeIcon@2x.png","icons_outlined_double_fire@2x.png","icons_outlined_channels_fire@2x.png","icons_outlined_Winningrecord@2x.png","icons_outlined_photo_wall@2x.png","refresh_regular@2x.png","icons_outlined_talk@2x.png","icons_filled_tool@2x.png","2016_coin3@2x.png","icons_outline_author_copyid@2x.png","icons_outlined_autoplay_next_on@2x.png","icons_outlined_maxsize@2x.png","icons_outlined_photowall@2x.png","icon_filled_slash@2x.png","email_regular@2x.png","fileicon_epub_icon@2x.png","icons_filled_double_fire@2x.png","icon_outlined_picture@2x.png","AlbumOperateMore@2x.png","airplay_filled@2x.png","icons_outlined_stoptranslate@2x.png","pencil_regular@2x.png","icons_finder_follow_add@2x.png","openim_group_icon@2x.png","icons_outlined_sending@2x.png","icons_filled_coin@2x.png","icons_outlined_arrow_up@2x.png","icons_live_filled_eyes_on@2x.png","icon_outlined_eraser@2x.png","icons_outlined_wifi@2x.png","icons_tab_like_unSelect@2x.png","icons_outlined_cellphone@2x.png","icons_outlined_line_recently@2x.png","icon_tag_certification_organization@2x.png","icons_outlined_wn_cut@2x.png","fileicon_PDF120@2x.png","HeadImageBorder@2x.png","icons_filled_live_ear@2x.png","coin_banner_icon@2x.png","mediaPreviewPause@2x.png","mini_program_filled@2x.png","weapp_corner_icon_dark@2x.png","icons_outlined_like@2x.png","icons_filled_reddot@2x.png","icons_outlined_finder_tab_like@2x.png","xmark_circle_filled@2x.png","icons_filled_emoticon_hl@2x.png","icons_finder_live_icon_color@2x.png","WAMainFrame_CloseArrow@2x.png","icons_outlined_more2@2x.png","checkmark_circle_filled@2x.png","icons_outlined_channels_comment@2x.png","icons_outlined_limited_mode@2x.png","icons_outlined_channels_like_cell@2x.png","icons_webview_custom_menu_pdd_favorite@2x.png","AlbumCommentSingleAHL@2x.png","icons_filled_home@2x.png","icons_outlined_device_multi@2x.png","icons_outlined_channels_turn@2x.png","icons_outlined_add2@2x.png","icons_webview_custom_menu_pdd_bybt@2x.png","icons_filled_finder_collection@2x.png","live_anchor_vision_effect@2x.png","weapp_icon_share@2x.png","keyboard_delete@2x.png","icons_outlined_play_cricle@2x.png","icon_outlined_download_select@2x.png","icons_outlined_call_good@2x.png","icons_outlined_play_quickly2@2x.png","icons_outlined_wifi_error@2x.png","icons_outlined_ticket@2x.png","live_loading@2x.png","live_reward_icon@2x.png","Icons_outlined_order@2x.png","fileicon_ppt120@2x.png","icons_filled_shotswitching@2x.png","icons_outlined_tabs_square@2x.png","icons_outlined_minimizewindow@2x.png","icons_filled_shocked_group@2x.png","icons_filled_pencil4@2x.png","icons_filled_wn_cut@2x.png","icons_filled_cards@2x.png","icons_filled_chats@2x.png","icons_outlined_firecrackers@2x.png","fileicon_music_icon_light@2x.png","ting_profile_1001@2x.png","Icons_filled_voice1@2x.png","icons_outlined_feed_promotion@2x.png","empty_album_music_darkmode@2x.png","icons_finder_comment_limit_regular@2x.png","contacts_add_newmessage@2x.png","icon_outlined_collect_personal@2x.png","icons_outlined_device_folder@2x.png","icons_outlined_finder_red_envelope@2x.png","icons_outlined_miniwindow_regular@2x.png","icons_outlined_shortcut_menu@2x.png","Voice_Dark@2x.png","icons_outlined_coin@2x.png","icons_filled_cellphone_inset@2x.png","icons_outlined_like_on@2x.png","icons_filled_close5@2x.png","icons_cardimg@2x.png","icons_finder_default_avatar@2x.png","icon_outlined_data@2x.png","fileicon_redenvelope_icon@2x.png","icons_filled_like@2x.png","WeWork@2x.png","icons_outlined_searchicon_sticker@2x.png","icons_outlined_device_pad_large@2x.png","icons_outlined_channels_comment_on@2x.png","icons_outlined_live_gift_bg@2x.png","AlbumCommentSingleBigHL@2x.png","finder_auth_icon@2x.png","icons_live_red_packet_regular@2x.png","icons_finder_more@2x.png","icons_finder_outlined_music@2x.png","fileicon_movie120@2x.png","icons_outlined_subtitle@2x.png","ui-resources_checkbox_unselected_fill@2x.png","icons_filled_mike_off2@2x.png","icons_outlined_like_adjusted_for_richtext@2x.png","icons_filled_info@2x.png","star_heavy@2x.png","player_volume_slider@2x.png","C2C_AA_Icon_2_Normal@2x.png","icons_filled_nearby@2x.png","fileicon_epub@2x.png","icons_outlined_shake@2x.png","icons_filled_fans@2x.png","icons_filled_loading@2x.png","icons_outlined_wn_choose@2x.png","fileicon_keynote@2x.png","HongBao_Close_Image@2x.png","icons_filled_talk@2x.png","Album_Advertise_Link_Icon@2x.png","icon_outlined_hb_smile@2x.png","icons_outlined_device_androidpad@2x.png","icons_filled_barrage@2x.png","icons_filled_eyes_off@2x.png","icons_filled_stop_translate@2x.png","MessageSendFail_HL@2x.png","icons_outlined_apple_watch@2x.png","icons_filled_imac@2x.png","icons_filled_subtitle_off@2x.png","eyes_on_filled@2x.png","icons_outlined_loading_light@2x.png","arrow_to_vertical@2x.png","icons_outlined_close_8@2x.png","icons_outlined_migration_recieve@2x.png","pencil_filled@2x.png","icon_filled_brand_short_pic@2x.png","Miniprogram_Icon_Default@2x.png","icons_filled_effects@2x.png","fileicon_video_icon_dark@2x.png","fileicon_keynote120@2x.png","fileicon_number_icon@2x.png","icons_outlined_wechatout@2x.png","ChatRoom_Bubble_Voice_Receiver_Playing2@2x.png","MessageListSendFail@2x.png","icons_outlined_airplay@2x.png","icons_webview_custom_menu_pdd_categories@2x.png","icons_filled_pencil2@2x.png","weapp_destop_3rd_running_flag@2x.png","voip_filled_off@2x.png","player_volume_slider_active@2x.png","icon_filled_picture@2x.png","icons_filled_sending@2x.png","refresh_filled@2x.png","icons_outlined_home@2x.png","icons_filled_pause4@2x.png","plus_filled@2x.png","LuckyMoney_RoundBtn@2x.png","weapp_corner_icon_light@2x.png","add_friend_icon_search@2x.png","eyes_on_regular@2x.png","icons_filled_channels_good_1.5pt@2x.png","icons_filled_hb_select_small@2x.png","fileicon_voice_icon_dark@2x.png","icon_outlined_store@2x.png","Action_Enterprise@2x.png","LuckyMoney_RoundBtnHl@2x.png","icons_outlined_subscriptions@2x.png",
+"icons_outlined_top@3x.png","icons_outlined_channels_share@3x.png","icons_outlined_volume_up@3x.png","icons_outlined_float_window_on@3x.png","icons_outlined_share@3x.png","ContactIndexShape@3x.png","icons_outlined_mobile_contacts@3x.png","lock_off_regular@3x.png","icons_filled_grouptool@3x.png","picture_filled@3x.png","santa-hat.png","icons_outlined_note@3x.png","fileicon_photo_icon_light@3x.png","icons_outlined_menu@3x.png","share_regular@3x.png","dot_3_regular@3x.png","fileicon_unknown_icon_light@3x.png","icons_outlined_grouppay@3x.png","fileicon_zip_icon_icon@3x.png","icons_filled_subscriptions@3x.png","transfer_filled@3x.png","phone_rectangle_filled@3x.png","doc_filled@3x.png","icons_outlined_camera_switch@3x.png","icons_outlined_time@3x.png","favorites_filled_colorful@3x.png","download_regular@3x.png","news_regular@3x.png","new_gift_filled_icon@3x.png","icons_outlined_video_phone@3x.png","icons_outlined_volume_off@3x.png","icons_filled_video_phone@3x.png","WebView_Back_Shadow@3x.png","icons_outlined_othersticker@3x.png","icons_outlined_group_detail@3x.png","common_bubble_arrow_down@3x.png","icons_outlined_close2@3x.png","favorites_outlined_colorful@3x.png","previous_regular@3x.png","icons_outlined_delete@3x.png","doc_outlined_16@3x.png","fileicon_folder48@3x.png","icons_outlined_channels_LIVE@3x.png","refresh@3x.png","icons_filled_favorites@3x.png","cameraEmoticonCreateButton@3x.png","Voice_Dark.png","icons_filled_back3@3x.png","icons_filled_groupmessage@3x.png","FriendsSendsPicturesArtworkNIcon.png","icons_filled_news@3x.png","ui-resources_checkbox_selected_fill@3x.png","icons_filled_zoomout@3x.png","trash_on_regular@3x.png","AS_safari@3x.png","ReadVerified_icon@3x.png","icons_filled_mini_program2@3x.png","person_list_regular@3x.png","icon_filled_taskbar_entry_music@3x.png","FriendsSendsPicturesArtworkNIcon@4x.png","doc_filled_16@3x.png","icons_filled_like_finder@3x.png","fileicon_pages_icon@3x.png","icons_regular_text@3x.png","icons_finder_filled_play@3x.png","icons_filled_quote@3x.png","brandsessionholder_weapp.png","icons_outlined_stickerAlbum@3x.png","webview_ting_entry@3x.png","icons_filled_more@3x.png","icons_regular_game@3x.png","icons_finder_outlined_play@3x.png","AS_QQ@3x.png","pencil_rectangle_filled@3x.png","icons_outlined_previous2@3x.png","icons_outlined_like_finder@3x.png","icons_filled_delete@3x.png","menu_filled@3x.png","icons_filled_mike2@3x.png","gear_filled@3x.png","icons_outlined_wechatpay@3x.png","icons_filled_videocall@3x.png","icons_filled_moment@3x.png","icons_filled_done2@3x.png","FriendsSendsPicturesArtworkNIcon@3x.png","icons_filled_stickerAlbum@3x.png","fileicon_word_icon@3x.png","check_mark_filled@3x.png","icons_outlined_pay_check_mark@3x.png","icons_filled_AddSticker@3x.png","icons_outlined_voiceinput_white@3x.png","icon_voice_playing2@3x.png","doc_regular@3x.png","pencil_rectangle_regular@3x.png","icons_outlined_brand_totext@3x.png","icons_outlined_previous@3x.png","call_off_regular@3x.png","compose_article_filled@3x.png","icons_filled_ting_finder_entry_music@3x.png","xmark_regular@3x.png","play_regular@3x.png","icons_regular_quote@3x.png","icons_outlined_new_HtoV@3x.png","Action_Moments@3x.png","icons_filled_close@3x.png","quick_send_weapp_msg_default_image@3x.png","icon_filled_brand_head_dark@3x.png","bubble_regular@3x.png","icons_filled_top@3x.png","ui-resource_back@3x.png","icons_filled_img_photowall@3x.png","icons_outlined_contacts@3x.png","call_off_filled@3x.png","lqt_planitemcell_more@3x.png","icons_outlined_groupmessage@3x.png","Action_Share@3x.png","c2c_transfer_icon~iphone.png","icons_filled_menu@3x.png","tag_regular@3x.png","icons_outlined_emoji_animal.png","icons_filled_unlock@3x.png","icons_filled_at@3x.png","icons_filled_voiceinput_white@3x.png","add_friend_icon_offical@3x.png","fileicon_pages@3x.png","exclamation_mark_circle_regular@3x.png","picture_regular@3x.png","icon_negative_feedback@3x.png","camera_filled@3x.png","icons_outlined_keyboard@3x.png","icons_outlined_moment@3x.png","icons_outlined_call_end@3x.png","heart_filled@3x.png","add_friend_icon_addgroup@3x.png","icons_outlined_colorful_game@3x.png","icons_filled_delete2@3x.png","icons_outlined_delete_on@3x.png","icons_outlined_music@3x.png","icons_outlined_more@3x.png","add_friend_icon_brand_service@3x.png","icons_filled_like_full@3x.png","SenderImageNodeMask@3x.png","icons_outlined_multiple_choice@3x.png","icons_outlined_max_window@3x.png","reindeer.png","icons_filled_othersticker@3x.png","Contact_Chatonlyfriends@3x.png","icons_filled_takephoto_nor@3x.png","santa-claus.png","icons_filled_group_detail@3x.png","qqEmojiTips@3x.png","AS_QQbrowser@3x.png","icons_regular_grouptool@3x.png","icons_outlined_channels_bulletscreen_stop@3x.png","fileicon_word@3x.png","gifts-bag.png","icons_outlined_news@3x.png","cardholder_regular@3x.png","icons_outlined_download@3x.png","icons_outlined_error@3x.png","icons_filled_transfer2@3x.png","gear_regular@3x.png","fileicon_zip@3x.png","C2C_Image_Download_Cancel@3x.png","icon_filled_solitaire@3x.png","icon_filled_brand_head@3x.png","clock_regular@3x.png","icons_outlined_arrow_down_2@3x.png","lock_filled@3x.png","icons_outlined_live_mini_window@3x.png","live_like_anchor@3x.png","bell_on_filled@3x.png","person_list_filled@3x.png","icons_outlined_unlock@3x.png","icons_outlined_bellring_on@3x.png","exclamation_mark_triangle_regular@3x.png","compose_article_regular@3x.png","icons_filled_chatbox@3x.png","icons_filled_wechatpay@3x.png","icons_filled_comment_full@3x.png","live_icons_clear_window_new@3x.png","enterprisewechat_outlined_colorful@3x.png","favorites_regular@3x.png","bubble_filled@3x.png","icons_regular_contacts@3x.png","icons_filled_lock@3x.png","icons_filled_switch.png","folder_regular@3x.png","trash_on_filled@3x.png","icons_outlined_new_mini_window@3x.png","icons_outlined_live@3x.png","icons_outlined_finder@3x.png","quick_send_weapp_msg_bubble@3x.png","radar_regular@3x.png","icons_outlined_stickychat@3x.png","icons_filled_download@3x.png","fileicon_pdf@3x.png","christmas-bell.png","filehelper.png","discount-tag.png","c2c_overtime_icon@3x.png","icon_stick@3x.png","weapp_bellring_off@3x.png","icons_outlined_display@3x.png","star_regular@3x.png","plugins_FriendNotify@3x.png","icons_outlined_live_mini_window_light@3x.png","EmoticonFocus@3x.png","add_friend_icon_brand_service@3.png","icons_outlined_cloud@3x.png","fileicon_mask_icon@3x.png","icons_outlined_multitask@3x.png","icons_outlined_game@3x.png","check_mark_regular@3x.png","icons_outlined_voice_input@3x.png","person_tie_regular@3x.png","dot_3_filled@3x.png","icons_filled_call_end@3x.png","icons_filled_done@3x.png","bell_on_regular@3x.png","icons_filled_keyboard@3x.png","icons_outlined_text@3x.png","icons_outlined_img_photowall@3x.png","icons_outlined_refresh@3x.png","exclamation_mark_circle_filled@3x.png","icons_filled_cards&offers@3x.png","icons_outlined_slider_indicator@3x.png","icons_outlined_close@3x.png","icon_album_regular@3x.png","news_filled@3x.png","fileicon_unknown_icon_light_icon@3x.png","icons_outlined_takephoto_nor@3x.png","add_friend_icon_invite@3x.png","icons_filled_nearby_wxa@3x.png","icons_outlined_info@3x.png","radar_filled@3x.png","Contact_Icon_Special_Attention_Me@3x.png","icons_filled_multiple_choice@3x.png","fileicon_excel_icon@3x.png","icons_filled_call@3x.png","icons_outlined_sort@3x.png","icons_outlined_find_content@3x.png","icons_filled_miniprogram@3x.png","brandservicesessionholder.png","icons_outlined_miniprogram@3x.png","icons_outlined_comment@3x.png","favorites_filled@3x.png","lock_off_filled@3x.png","icons_outlined_pay@3x.png","icons_outlined_like_full@3x.png","icons_filled_finder@3x.png","icons_filled_contacts@3x.png","icons_outlined_done2@3x.png","video_regular@3x.png","icons_filled_volume_down@3x.png","icon_outlined_taskbar_entry_music@3x.png","icons_filled_mini_program@3x.png","openimbrand.png","icons_filled_mike@3x.png","icons_outlined_copy@3x.png","enterprisewechat_filled_colorful@3x.png","icons_filled_volume_off@3x.png","heart_regular@3x.png","display_filled@3x.png","tabbar_badge@3x.png","icons_filled_album@3x.png","video_filled@3x.png","icons_outlined_official_accounts@3x.png","icons_outlined_transfer2@3x.png","icons_filled_bell_ring_on@3x.png","icons_filled_device@3x.png","icons_filled_card@3x.png","AlbumTopArrow@3x.png","icons_regular_video_phone@3x.png","icons_filled_setting@3x.png","icons_outlined_live_nearby@3x.png","icons_outlined_font@3x.png","icons_filled_transfer@3x.png","fileicon_mask@3x.png","wepay.png","icons_filled_previous@3x.png","icons_outlined_volume_down@3x.png","snowman.png","DefaultHead@3x.png","icons_filled_volume_up@3x.png","icons_outlined_grouptool@3x.png","icons_filled_game@3x.png","icons_outlined_mini_program@3x.png","lock_regular@3x.png","gift_filled_icon@3x.png","transfer_regular@3x.png","icons_outlined_text_8@3x.png","icons_outlined_like_1.5pt@3x.png","icons_outlined_done@3x.png","icons_outlined_colorful_game_dark@3x.png","icons_filled_comment@3x.png","c2c_hongbao_icon_hk@3x.png","weapp_capsule_more@3x.png","fileicon_pdf_icon_icon@3x.png","icons_outlined_back3@3x.png","icons_outlined_channels_favorites@3x.png","fileicon_pdf_icon@3x.png","christmas-chimney.png","icons_outlined_bell_ring_on@3x.png","icons_outlined_colorful_menu_browser@3x.png","icons_regular_album@3x.png","icons_outlined_nearby@3x.png","icons_filled_max_window@3x.png","icons_filled_text@3x.png","icons_outlined_lock@3x.png","call_on_filled@3x.png","camera_regular@3x.png","fileicon_number@3x.png","exclamation_mark_triangle_filled@3x.png","folder_filled@3x.png","icons_outlined_mike2@3x.png","icon_outlined_brand_star@3x.png","fileicon_photo_icon_dark@3x.png","keyboard_circle_filled@3x.png","Action_Sheet_Fav_New@3x.png","download_filled@3x.png","icons_outlined_brand_tomenu@3x.png","icons_outlined_listen_later@3x.png","icons_filled_live@3x.png","avatar_dotline_add_bg@3x.png","weapp_capsule_exit@3x.png","fileicon_zip_icon@3x.png","icons_outlined_folder@3x.png","keyboard_circle_regular@3x.png","icons_filled_camera@3x.png","icons_filled_livephoto@3x.png","icons_regular_news@3x.png","person_tie_filled@3x.png","icons_filled_pencil@3x.png","share_filled@3x.png","pay_filled@3x.png","icons_filled_camera_switch@3x.png","fileicon_excel@3x.png","icons_outlined_quote@3x.png","icon_voice_playing3@3x.png","icons_outlined_setting@3x.png","wine-glass.png","icons_outlined_mike@3x.png","icons_filled_copy@3x.png","icons_outlined_ting_finder_entry_music@3x.png","icons_outlined_AddSticker@3x.png","icon_outlined_listen@3x.png","call_on_regular@3x.png","icons_outlined_favorites@3x.png","common_bubble_main_part@3x.png","icons_outlined_approve@3x.png","cardholder_filled@3x.png","icons_outlined_chatbox@3x.png","icons_outlined_makesticker@3x.png","Contact_icon_ContactTag@3x.png","icons_outlined_stickychat_dark@3x.png","menu_regular@3x.png","icons_outlined_icloud@3x.png","phone_rectangle_regular@3x.png","icons_outlined_mini_program2@3x.png","icons_outlined_display_lock@3x.png","pay_regular@3x.png","icons_filled_bluetooth@3x.png","favorites_regular_colorful@3x.png","icons_outlined_cards&offers@3x.png","icons_outlined_card@3x.png","icon_voice_playing1@3x.png","icon_outlined_solitaire@3x.png","icons_filled_cards.png","icons_filled_miniwindow@3x.png","icons_filled_makesticker@3x.png","icons_outlined_delete_emoji@3x.png","icons_outlined_play@3x.png","icons_filled_share@3x.png","play_circle_filled@3x.png","icons_filled_error3@3x.png","icons_outlined_at@3x.png","icon_album_filled@3x.png","previous_filled@3x.png","dt_icon_dark.png","Add_emoticon_button_nor@3x.png","ReceiverImageNodeMask@3x.png","fileicon_light@3x.png","Action_qzone@3x.png","GameCenterSearchBtn@3x.png","icons_filled_add_friends@3x.png","icons_outlined_comment_full@3x.png","icons_outlined_call@3x.png","live_icon@3x.png","play_circle_regular@3x.png","icons_regular_pencil@3x.png","icons_outlined_pencil@3x.png","display_regular@3x.png","icons_outlined_add_friends@3x.png","icons_filled_pay@3x.png","icons_regular_pay@3x.png","icons_outlined_camera@3x.png","notification_messages.png","icons_outlined_biz_arrow_down@3x.png","fileicon_light_icon@3x.png","icons_filled_folder@3x.png","icons_filled_qr_code@3x.png","icons_outlined_location@3x.png","icons_filled_previous2@3x.png","icons_filled_refresh@3x.png","translate_regular@3x(1).png","C2C_AA_Icon_3_Normal@3x.png","icons_filled_colorful_man@3x.png","arrow_left_circle_filled@3x.png","icons_filled_author_like_textstate@3x.png","icons_filled_finder_arrow_down@3x.png","finder_arrow_right_medium@3x.png","HongBao_Close_Image_HL@3x.png","icon_filled_taskbar_entry_audio@3x.png","icons_filled_translated_icon@3x.png","icons_filled_feed_promotion@3x.png","at_filled@3x.png","dot_3_circle_regular@3x.png","weapp_menu_add_to_desktop@3x.png","icons_outlined_at_new@3x.png","wallet_pdd.png","icons_outlined_add3@3x.png","wallet_qb.png","icon_add_more_friends_brand_service@3x.png","incos_filled_error4@3x.png","icons_filled_minimizewindow@3x.png","icons_outlined_channels_comment_stop@3x.png","AlbumAddQQSpaceBig@3x.png","icons_filled_retract@3x.png","fileicon_xls120@3x.png","live_icons_filled_bean@3x.png","icons_live_new_main_common@3x.png","wallet_vip.png","MessageSendFail@3x.png","max_window_filled@3x.png","icons_finder_rotate@3x.png","icons_filled_photo_wall@3x.png","icons_finder_new_minimize@3x.png","arrow_up_circle@3x.png","icons_filled_previous_medium@3x.png","mediaPreviewPlay@3x.png","arrow_double_regular@3x.png","wallet_mttg.png","empty_album_music@3x.png","channels_regular@3x.png","airplay_regular@3x.png","icons_add_expression@3x.png","Action_Moments_Dark@3x.png","convert_to_text_filled@3x.png","icons_outlined_clip@3x.png","ChatRoom_Bubble_Voice_Sender_Playing3@3x.png","icons_filled_like_group@3x.png","fileicon_music_icon@3x.png","fileicon_music120@3x.png","fileicon_ppt_icon@3x.png","icons_outlined_channels_favorites_cell@3x.png","wallet_hc.png","fileicon_txt@3x.png","xmark_circle_regular@3x.png","icons_webview_custom_menu_pdd_index@3x.png","player_volume_dot@3x.png","icon_outlined_mark_as_unread@3x.png","wallet_dd.png","transh_off_filled@3x.png","christmas-earmuffs.png","icons_filled_call_video@3x.png","icons_outlined_channels_good@3x.png","icons_outlined_local_network@3x.png","AlbumReflashIcon@3x.png","ting_profile_1002@3x.png","live_minimize_screen@3x.png","icons_filled_color_favorites@3x.png","Icons_outlined_format@3x.png","mike_on_filled@3x.png","AlbumLikeSmall@3x.png","icons_outlined_tag_fav@3x.png","star_3_line_regular@3x.png","icons_filled_finder_red_envelope@3x.png","icon_outlined_search_arrow_down@3x.png","icons_filled_wn_choose@3x.png","note_filled@3x.png","icons_outlined_finder_listen@3x.png","icons_filled_help@3x.png","AlbumAddQQSpaceBigHL@3x.png","icons_outlined_tag@3x.png","icons_filled_sight_play@3x.png","icons_filled_open@3x.png","icons_filled_song@3x.png","icons_outlined_airpla@3x.png","sdgd@3x.png","icons_outlined_large_image@3x.png","icons_outlined_device_mac_large@3x.png","fileicon_zip120@3x.png","icons_outlined_fire@3x.png","icons_survey_like@3x.png","insurance_outlined@3x.png","icons_filled_activity@3x.png","live_filled_proof@3x.png","icons_outlined_double_fire_lock@3x.png","weapp_icon_close@3x.png","icons_filled_specialplay@3x.png","icon_triangle@3x.png","icons_outline_todo-square@3x.png","livephoto_on_filled@3x.png","fileicon_unknown_icon_dark@3x.png","wallet_lct.png","Hongbao_Icon@3x.png","icons_tl_medium_camera@3x.png","question_mark_circle_regular@3x.png","ui-resources_checkbox_selected@3x.png","wallet_sjcz.png","icons_outlined_square_play@3x.png","icons_filled_link@3x.png","icons_filled_large_image@3x.png","icons_outlined_pause@3x.png","icons_filled_live_photo@3x.png","play_filled@3x.png","icons_filled_cutie@3x.png","qqmail.png","icons_finder_minimize@3x.png","icons_outlined_voice2@3x.png","ad_finder_link_icon@3x.png","mp_comment_delete@3x.png","ChatRoom_Bubble_Voice_Receiver_Playing3@3x.png","icons_outlined_copypath@3x.png","icons_outlined_min_window@3x.png","icons_filled_clip@3x.png","picSearch_medium@3x.png","icons_outlined_groupdetail@3x.png","icons_outlined_mike3@3x.png","finder_thumb_medium@3x.png","icons_filled_wechat_out@3x.png","brand_live_arrow_icon@3x.png","icons_outlined_channel@3x.png","icons_filled_more2@3x.png","wallet_shjf.png","wallet_cs.png","icons_outlined_live_pip_window2@3x.png","picSearch_special@3x.png","icons_outlined_transfer_ultron@3x.png","Miniprogram_Icon_DefaultDM@3x.png","icons_filled_subtitle_on@3x.png","icon_outlined_maximize@3x.png","icons_filled_call_good@3x.png","icons_outline_todo-done@3x.png","at_regular@3x.png","icons_filled_colorful_female@3x.png","wallet_jdms.png","icons_outlined_small_image@3x.png","icons_filled_email@3x.png","plus_regular@3x.png","icons_filled_small_image@3x.png","icons_filled_finder_fire@3x.png","heart_off_regular@3x.png","icons_checkbox_unselected@3x.png","Action_JD_cart@3x.png","live_tips_enlarge@3x.png","du@3x.png","Action_JD_profile@3x.png","Action_JD_member@3x.png","fileicon_keynote_icon@3x.png","info_circle_filled_security_verify@3x.png","Action_JD_categories@3x.png","icon_filled_brand_followed@3x.png","icons_outlined_add-friends@3x.png","icons_webview_custom_menu_pdd_profile@3x.png","FindFriendView_Setting_Arrow@3x.png","pause_filled@3x.png","note_regular@3x.png","link_egular@3x.png","icons_filled_voice2@3x.png","icons_filled_wish@3x.png","subscriptions_regular@3x.png","live_icons_filled_report_problem@3x.png","ProfileHeadImageBorder@3x.png","icons_filled_cellphone@3x.png","icons_filled_nearby_hot@3x.png","finder_favorites_regular@3x.png","icons_filled_record_bg@3x.png","icons_outlined_link@3x.png","weapp_icon_maximize@3x.png","icons_outlined_manage@3x.png","scan_torch_hl@3x.png","radio_checkbox_selected@3x.png","icons_filled_tv@3x.png","icons_outlined_finder_profile_like@3x.png","icons_tl_medium_magnifying_glass@3x.png","icons_filled_notfriends@3x.png","HeadImageBorderClick@3x.png","icons_filled_outlined_like@3x.png","eyes_off_filled@3x.png","wc_card_coupon@3x.png","Icons_outlined_todo@3x.png","livephoto_play_filled@3x.png","recent_forwardred_delete@3x.png","icons_outlined_addfriends@3x.png","DefaultProfileHead_phone@3x.png","player_volume_muted@3x.png","coin5@3x.png","Fighting_GoldIcon@3x.png","wallet_ppfx.png","icons_outlined_channels_good_cell@3x.png","video_clip@3x.png","Icons_Outlined_DelEmoji@3x.png","icons_outlined_promotion@3x.png","fileicon_voice_icon_light@3x.png","weapp_bell_off@3x.png","icons_outlined_help@3x.png","icons_filled_tag@3x.png","icons_outlined_avatar@3x.png","icons_outlined_device_folder@3x.png","contacts_add_newmessage@3x.png","icon_outlined_collect_personal@3x.png","icons_finder_comment_limit_regular@3x.png","empty_album_music_darkmode@3x.png","Icons_filled_voice1@3x.png","icons_outlined_feed_promotion@3x.png","icons_filled_chats@3x.png","icons_outlined_firecrackers@3x.png","ting_profile_1001@3x.png","fileicon_music_icon_light@3x.png","icons_filled_wn_cut@3x.png","icons_filled_cards@3x.png","icons_filled_pencil4@3x.png","icons_outlined_tabs_square@3x.png","icons_outlined_minimizewindow@3x.png","icons_filled_shocked_group@3x.png","fileicon_ppt120@3x.png","icons_filled_shotswitching@3x.png","live_reward_icon@3x.png","Icons_outlined_order@3x.png","icons_outlined_ticket@3x.png","wallet_cx.png","live_loading@3x.png","icons_outlined_play_quickly2@3x.png","icons_outlined_wifi_error@3x.png","wallet_zz.png","icons_outlined_call_good@3x.png","icons_outlined_play_cricle@3x.png","icon_outlined_download_select@3x.png","weapp_icon_share@3x.png","keyboard_delete@3x.png","live_anchor_vision_effect@3x.png","icons_webview_custom_menu_pdd_bybt@3x.png","icons_filled_finder_collection@3x.png","icons_outlined_device_multi@3x.png","icons_outlined_channels_turn@3x.png","icons_outlined_add2@3x.png","AlbumCommentSingleAHL@3x.png","icons_filled_home@3x.png","icons_webview_custom_menu_pdd_favorite@3x.png","icons_outlined_limited_mode@3x.png","icons_outlined_channels_like_cell@3x.png","icons_outlined_channels_comment@3x.png","checkmark_circle_filled@3x.png","icons_finder_live_icon_color@3x.png","icons_outlined_more2@3x.png","WAMainFrame_CloseArrow@3x.png","icons_outlined_finder_tab_like@3x.png","xmark_circle_filled@3x.png","icons_filled_emoticon_hl@3x.png","icons_filled_reddot@3x.png","icons_outlined_like@3x.png","mediaPreviewPause@3x.png","mini_program_filled@3x.png","weapp_corner_icon_dark@3x.png","icons_filled_live_ear@3x.png","coin_banner_icon@3x.png","HeadImageBorder@3x.png","icon_tag_certification_organization@3x.png","icons_outlined_wn_cut@3x.png","fileicon_PDF120@3x.png","icons_outlined_cellphone@3x.png","icons_outlined_line_recently@3x.png","icons_outlined_wifi@3x.png","icons_tab_like_unSelect@3x.png","icon_outlined_eraser@3x.png","icons_filled_coin@3x.png","icons_outlined_arrow_up@3x.png","icons_live_filled_eyes_on@3x.png","wallet_xyk.png","icons_outlined_sending@3x.png","wallet_bx.png","openim_group_icon@3x.png","icons_outlined_stoptranslate@3x.png","icons_finder_follow_add@3x.png","pencil_regular@3x.png","fileicon_epub_icon@3x.png","icons_filled_double_fire@3x.png","icon_outlined_picture@3x.png","AlbumOperateMore@3x.png","airplay_filled@3x.png","icons_outline_author_copyid@3x.png","icons_outlined_autoplay_next_on@3x.png","icons_outlined_maxsize@3x.png","icons_outlined_photowall@3x.png","icon_filled_slash@3x.png","email_regular@3x.png","2016_coin3@3x.png","refresh_regular@3x.png","icons_outlined_talk@3x.png","icons_filled_tool@3x.png","icons_outlined_photo_wall@3x.png","icons_outlined_Winningrecord@3x.png","icons_outlined_double_fire@3x.png","icons_outlined_channels_fire@3x.png","wallet_mt.png","Action_JD_index@3x.png","live_icons_music_largeIcon@3x.png","icons_outlined_subscriptions@3x.png","Action_Enterprise@3x.png","LuckyMoney_RoundBtnHl@3x.png","icon_outlined_store@3x.png","fileicon_voice_icon_dark@3x.png","icons_filled_hb_select_small@3x.png","add_friend_icon_search@3x.png","eyes_on_regular@3x.png","icons_filled_channels_good_1.5pt@3x.png","weapp_corner_icon_light@3x.png","LuckyMoney_RoundBtn@3x.png","plus_filled@3x.png","icons_outlined_home@3x.png","icons_filled_pause4@3x.png","icon_filled_picture@3x.png","icons_filled_sending@3x.png","refresh_filled@3x.png","voip_filled_off@3x.png","player_volume_slider_active@3x.png","icons_filled_pencil2@3x.png","weapp_destop_3rd_running_flag@3x.png","icons_outlined_airplay@3x.png","icons_webview_custom_menu_pdd_categories@3x.png","MessageListSendFail@3x.png","fileicon_number_icon@3x.png","ChatRoom_Bubble_Voice_Receiver_Playing2@3x.png","icons_outlined_wechatout@3x.png","icon_filled_brand_short_pic@3x.png","Miniprogram_Icon_Default@3x.png","icons_filled_effects@3x.png","fileicon_video_icon_dark@3x.png","fileicon_keynote120@3x.png","pencil_filled@3x.png","icons_outlined_migration_recieve@3x.png","wallet_yljk.png","arrow_to_vertical@3x.png","icons_outlined_close_8@3x.png","icons_outlined_loading_light@3x.png","eyes_on_filled@3x.png","icons_filled_subtitle_off@3x.png","icons_filled_imac@3x.png","icons_outlined_apple_watch@3x.png","MessageSendFail_HL@3x.png","icons_filled_stop_translate@3x.png","wallet_txgy.png","icons_outlined_device_androidpad@3x.png","icons_filled_barrage@3x.png","icons_filled_eyes_off@3x.png","icon_outlined_hb_smile@3x.png","icons_filled_talk@3x.png","Album_Advertise_Link_Icon@3x.png","fileicon_keynote@3x.png","HongBao_Close_Image@3x.png","icons_filled_fans@3x.png","icons_filled_loading@3x.png","icons_outlined_wn_choose@3x.png","christmas-day.png","fileicon_epub@3x.png","icons_outlined_shake@3x.png","icons_filled_nearby@3x.png","star_heavy@3x.png","player_volume_slider@3x.png","C2C_AA_Icon_2_Normal@3x.png","ui-resources_checkbox_unselected_fill@3x.png","icons_filled_mike_off2@3x.png","icons_outlined_like_adjusted_for_richtext@3x.png","icons_filled_info@3x.png","wallet_dy.png","icons_outlined_subtitle@3x.png","icons_finder_more@3x.png","icons_finder_outlined_music@3x.png","fileicon_movie120@3x.png","icons_live_red_packet_regular@3x.png","icons_outlined_channels_comment_on@3x.png","icons_outlined_live_gift_bg@3x.png","wallet_wld.png","AlbumCommentSingleBigHL@3x.png","finder_auth_icon@3x.png","icons_outlined_device_pad_large@3x.png","icons_filled_like@3x.png","WeWork@3x.png","icons_outlined_searchicon_sticker@3x.png","icon_outlined_data@3x.png","fileicon_redenvelope_icon@3x.png","icons_filled_close5@3x.png","icons_cardimg@3x.png","icons_finder_default_avatar@3x.png","icons_outlined_like_on@3x.png","icons_filled_cellphone_inset@3x.png","Voice_Dark@3x.png","icons_outlined_coin@3x.png","wallet_jd.png","icons_outlined_miniwindow_regular@3x.png","icons_outlined_shortcut_menu@3x.png","icons_outlined_finder_red_envelope@3x.png","icons_filled_music_topic@2x.png","icons_filled_news_off@2x.png","scan_myqr@2x.png","WeChat_Lab_Logo_small@2x.png","c2c_received_icon@2x.png","finder_thumb_regular@2x.png","live_game_join@2x.png","live_game@2x.png","icons_filled_heart@2x.png","icons_outlined_followed@2x.png","icons_filled_circle_delete@2x.png","kinda_back@2x.png","icons_outlined_note_B@2x.png","AlbumPushLuckymoneyIcon@2x.png","add_friend_icon_scanqr@2x.png","icon_filled_brand_voice@2x.png","fileicon_link120@2x.png","arrow_left_filled@2x.png","icons_outlined_wallet@2x.png","icons_filled_author_like_finder@2x.png","icons_outlined_ocr@2x.png","openim_group_hd_icon@2x.png","music_on_regular@2x.png","c2c_cancle_icon@2x.png","icons_outlined_exchange@2x.png","icons_outlined_session_arrow_down@2x.png","icons_filled_flash_off@2x.png","icons_outlined_voice@2x.png","location_filled@2x.png","2016_coin2@2x.png","search_filled@2x.png","bell_off_filled@2x.png","ChatRoom_Bubble_Voice_Sender_Playing1@2x.png","mike_off_filled@2x.png","icon_finder_pat_music@2x.png","arrow_down_regular@2x.png","icons_outlined_channels_like@2x.png","icons_outlined_colorful_moment_dark@2x.png","icons_outlined_bluetooth@2x.png","location_regular@2x.png","icons_outlined_groupdetail_check@2x.png","shopping_bag_filled@2x.png","fileicon_txt120@2x.png","live_anchor@2x.png","icon_color_momentcover@2x.png","text_regular@2x.png","icons_outlined_ChangeNote@2x.png","C2C_AA_Icon_Finish@2x.png","coin3@2x.png","icons_outlined_eyes_on@2x.png","arrow_right_filled@2x.png","Plugins_WeSport_avatar@2x.png","icons_outlined_eyes_off@2x.png","icons_filled_transfer_text@2x.png","collect_main_savecode_success_icon@2x.png","icons_filled_annoucement@2x.png","icons_outlined_colorful_cards_dark@2x.png","person_filled@2x.png","icons_outlined_imac_lock@2x.png","ad_wechat_icon@2x.png","scan_arrow@2x.png","icons_outlined_searchlogo_wide@2x.png","icons_outlined_top_video_off@2x.png","icons_outlined_emoji_animal@2x.png","coin1@2x.png","Voice@2x.png","icons_outlined_pay_transfer@2x.png","icons_outlined_searchlogo@2x.png","weapp_icon_debug@2x.png","icons_outlined_channels_thumb_thick@2x.png","person_2_regular@2x.png","icons_outlined_pay_faceid@2x.png","MoreWeApp@2x.png","icons_filled_ear@2x.png","TypeSelectorBtn_Black@2x.png","icons_filled_scan@2x.png","icons_outlined_channels_good_1.5pt@2x.png","icons_outlined_arrow@2x.png","fileicon_video_icon_light@2x.png","icons_outlined_sports@2x.png","icons_outlined_channels_bulletscreen_open@2x.png","C2C_AA_Icon_Default@2x.png","ui-resources_checkbox_unselected@2x.png","icon_music_regular@2x.png","icons_filled_video_call@2x.png","qr_code_filled@2x.png","discover_regular@2x.png","icons_filled_WeChatSearchEmblem@2x.png","icons_filled_allselect@2x.png","wcpay_location@2x.png","icons_filled_mike_off@2x.png","icons_outlined_sticker@2x.png","scan_torch@2x.png","translate_regular@2x.png","mike_off_regular@2x.png","icons_filled_add@2x.png","icons_filled_shake@2x.png","icons_filled_location@2x.png","icons_multitalk_scroll@2x.png","icons_outlined_facehb@2x.png","smile_filled@2x.png","fileicon_word_icon_icon@2x.png","finder_favorites_medium@2x.png","ChatRoom_Bubble_Voice_Receiver_Playing1@2x.png","icons_outlined_addoutline@2x.png","icons_regular_allselect@2x.png","ad_canvas_music_voice_off@2x.png","icons_arrow_right_v4@2x.png","icons_outlined_human_background@2x.png","fileicon_word120@2x.png","icons_outlined_album.svg@2x.png","WAWeb_Back_Dark@2x.png","icons_outlined_session_arrow_up@2x.png","2016_coin4@2x.png","more_live_voice_edu_icon@2x.png","live_filled_personal_proof@2x.png","icons_checkbox_selected@2x.png","ting_good@2x.png","icons_filled_video_call_off@2x.png","icons_outlined_colorful_moment@2x.png","icon_filled_brand_star@2x.png","fileicon_unknown_icon@2x.png","AS_Email@2x.png","icons_filled_new_share@2x.png","About_WeChat_AppIcon@2x.png","xmark_filled@2x.png","icons_outlined_faceid@2x.png","live_icons_clear_clarity@2x.png","StateFloatingWindow_mike@2x.png","icon_outlined_brand_menu@2x.png","Icons_outlined_item@2x.png","fileicon_pages120@2x.png","icons_outlined_chats@2x.png","icons_filled_sticker@2x.png","icons_outlined_colorful_websesarch@2x.png","icons_filled_fire@2x.png","AlbumNewNotify@2x.png","icons_outlined_colorful_favorites@2x.png","icons_filled_discover@2x.png","person_plus_regular@2x.png","icons_red_story_volume_off@2x.png","icons_outlined_mobilecontacts@2x.png","bubble_circle_regular@2x.png","icons_filled_promote@2x.png","icons_filled_note@2x.png","person_plus_filled@2x.png","fileicon_numbers120@2x.png","icon_outlined_search_icon_localpage@2x.png","icons_outlined_searchlogo_compact@2x.png","icons_outlined_translate@2x.png","smile_regular@2x.png","icons_outlined_album@2x.png","icons_outlined_back2@2x.png","Plugins_WeSport@2x.png","c2c_received_icon~iphone@2x.png","add_friend_icon_contacts@2x.png","fileicon_music@2x.png","icons_outlined_add@2x.png","icons_outlined_channels_bulletscreen_on@2x.png","redenvelope_handled@2x.png","Contact_Female@2x.png","magnifying_glass_filled@2x.png","scan_album@2x.png","icons_outlined_colorful_game_fill@2x.png","weapp_more_darkmode@2x.png","icons_outlined_pad@2x.png","scan_filled@2x.png","icons_filled_me@2x.png","c2c_hongbao_icon_cn@2x.png","link_filled@2x.png","keyboard@2x.png","live_reward_gift_default_icon@2x.png","icon_filled_shocked@2x.png","icons_outlined_transfer@2x.png","MoreGame@2x.png","Minimize_WeNote_Default@2x.png","icons_story_chatroom_entry@2x.png","icons_outlined_paly@2x.png","finder_heart_medium@2x.png","icons_outlined_previous2-1@2x.png","icons_outlined_fire2@2x.png","icons_finder_timeline_me@2x.png","add_emotion_outlined@2x.png","icons_filled_eyes_on@2x.png","icons_outlined_ear@2x.png","icons_outlined_scan@2x.png","icons_regular_play@2x.png","icons_filled_time@2x.png","2016_coin6@2x.png","icons_outlined_emoji_sticker@2x.png","icons_outlined_qrcode_reward@2x.png","ear_filled@2x.png","icons_filled_play@2x.png","qr_code_regular@2x.png","icons_outlined_colorful_favorites_dark@2x.png","ting_profile_1003@2x.png","Contact_Male@2x.png","add_friend_icon_reda@2x.png","icons_outlined_star@2x.png","icons_outlined_mosaic@2x.png","coin2@2x.png","weapp_icon_show_performance@2x.png","icons_filled_new_search@2x.png","scan_regular@2x.png","icons_filled_back2@2x.png","icons_filled_channels_bulletscreen_redoff@2x.png","icon_outlined_identity@2x.png","dt_icon@2x.png","icons_outlined_colorful_handoff@2x.png","arrow_right_regular@2x.png","add_friend_icon_search_wework@2x.png","icons_outlined_email@2x.png","fileicon_unknow120@2x.png","SystemMessages_HongbaoIcon@2x.png","icons_outlined_pay_logo@2x.png","volume_off_filled@2x.png","icons_outlined_pencil2@2x.png","shake_regular@2x.png","icon_music_filled@2x.png","icons_filled_airplay@2x.png","icons_outlined_colorful_chatroom_invitation@2x.png","link_regular@2x.png","ad_finder_live_icon@2x.png","icons_filled_mini_program3@2x.png","icons_filled_pause@2x.png","icons_outlined_video_call@2x.png","translate_filled@2x.png","camera_transfer_filled@2x.png","icons_outlined_cancel_top@2x.png","Icons_Filled_DelEmoji@2x.png","icon_outlined_search_more_magnifier@2x.png","AlbumLocationIconHL@2x.png","icons_filled_minwindow@2x.png","icons_filled_maxwindow@2x.png","icons_filled_clip_rotate@2x.png","ting_good_checked@2x.png","icons_filled_delete_on@2x.png","finder_colorring@2x.png","icons_outline_miniprogram_order@2x.png","icons_outlined_float_window_hl@2x.png","live_shopping@2x.png","voice_circle_filled@2x.png","icons_filled_flash_on@2x.png","dt_icon_dark@2x.png","icons_outlined_discover@2x.png","icons_regular_voice@2x.png","DefaultProfileHead@2x.png","icons_filled_play3@2x.png","icon_filled_brand_verify_star@2x.png","icons_filled_music_icon@2x.png","icons_outlined_qr_code@2x.png","icons_outlined_top_video@2x.png","icons_filled_back@2x.png","person_2_filled@2x.png","icons_filled_error@2x.png","icons_filled_mosaic@2x.png","mike_on_regular@2x.png","icons_filled_translate@2x.png","icons_outlined_WeChatSearchEmblem@2x.png","icons_outlined_dottedlist@2x.png","icon_tag_certification_personal@2x.png","discover_filled@2x.png","scan_watch_live@2x.png","c2c_transfer_icon@2x.png","icons_outlined_report_problem@2x.png","add_friend_myQR@2x.png","icons_outlined_pay_receive_money@2x.png","icons_outlined_red_envelope@2x.png","weapp_icon_star@2x.png","redenvelope_handled~iphone@2x.png","fileicon_ofd_icon@2x.png","bell_off_regular@2x.png","MoreMyFavorites@2x.png","imac_regular@2x.png","fileicon_txt_icon@2x.png","icons_outlined_shop@2x.png","fileicon_music_icon_dark@2x.png","friend_icon@2x.png","icons_outlined_imac@2x.png","icons_filled_eyes_off_dotted@2x.png","c2c_transfer_icon~iphone@2x.png","icons_filled_music@2x.png","expression@2x.png","icons_outlined_search_full@2x.png","icons_filled_barrage_off@2x.png","ChatRoom_Bubble_Voice_Receiver@2x.png","icons_outlined_double_arrow@2x.png","icons_filled_clock@2x.png","2016_coin1@2x.png","collapse@2x.png","icons_outlined_videocall@2x.png","ChatRoom_Bubble_Voice_Sender_Playing2@2x.png","Bind_Successed_Light@2x.png","icons_outlined_mosaic2@2x.png","icons_filled_mask@2x.png","icons_outlined_mike_off@2x.png","add_friend_icon_newgroup@2x.png","icons_filled_arrow@2x.png","icons_filled_channels_bulletscreen_brandon@2x.png","icon_filled_brand_verify@2x.png","icons_filled_state@2x.png","c2c_rejected_ico@2x.png","icons_outlined_colorful_handoff_success@2x.png","icons_outlined_channels_like_thick@2x.png","icons_outlined_colorful_note@2x.png","icons_finder_filled_music@2x.png","icons_filled_bell_ring_off@2x.png","icons_filled_text-style1@2x.png","icons_filled_wn_copy@2x.png","icons_filled_set_listening_status@2x.png","icons_outlined_live_game@2x.png","icons_tl_medium_arrow_left@2x.png","2016_coin5@2x.png","icons_filled_channels_good@2x.png","shopping_bag_regular@2x.png","arrow_left_regular@2x.png","icons_filled_star@2x.png","person_regular@2x.png","ChatRoom_Bubble_Voice_Sender@2x.png","icons_outlined_more_circle@2x.png","icons_filled_gift@2x.png","FriendsSendsPicturesSelectYIcon@2x.png","icons_filled_finder_live@2x.png","icons_filled_wechatWork@2x.png","finder_heart_regular@2x.png","volume_on_filled@2x.png","icons_filled_search@2x.png","pay_arrowleft@2x.png","NewFriend_Contacts_icon@2x.png","icons_filled_min_window@2x.png","fileicon_ppt@2x.png","magnifying_glass_regular@2x.png","search_regular@2x.png","fileicon_ofd@2x.png","icons_outlined_complaint@2x.png","icons_outlined_colorful_nearby_album@2x.png","icons_filled_red_envelope@2x.png","BigBang@2x.png","previous_circle_filled@2x.png","icon_live_camera_setting@2x.png","icons_outlined_migration_move_to_computer@2x.png","chat_room_tools_chat_room_desc@2x.png","text_filled@2x.png","ear_regular@2x.png","coin4@2x.png","redenvelope_handled_hk@2x.png","icons_outlined_me@2x.png","icons_filled_crop@2x.png","icons_filled_voice@2x.png","weapp_icon_unstar@2x.png","icons_outlined_searchicon_music@2x.png","icons_outlined_device_pc_large@2x.png","icons_filled_shop@2x.png","bubble_circle_filled@2x.png","WeChat_Lab_Logo@2x.png","WeChat_Lab_Logo_light_small@2x.png","coin6@2x.png","avatar_dotline_minus_bg@2x.png","icons_outlined_bellring_off@2x.png","voice_circle_regular@2x.png","icons_outlined_transfer_text@2x.png","icons_outlined_colorful_cards@2x.png","icons_outlined_search_logo@2x.png","C2C_AA_Icon_Normal@2x.png","icons_outlined_search@2x.png","icons_filled_float_window_on@2x.png","icons_outlined_display_mobile@2x.png","icon_outlined_search_arrow_up@2x.png","icons_outlined_allselect@2x.png","icons_outlined_channels_like_thicksvg@2x.png","icons_outlined_back@2x.png","ad_canvas_music_voice_off-2@2x.png","icons_outlined_channels_like_off@2x.png","icons_filled_switch@2x.png","icons_outlined_pauseBtn@2x.png","tag_filled@2x.png","icons_filled_add2@2x.png","icons_outlined_tv@2x.png","icons_filled_transfer_text_en@2x.png","icons_outlined_playBtn@2x.png","icons_filled_search_logo@2x.png","icons_outlined_channels_bulletscreen_off@2x.png","icons_filled_live_camera_settings@2x.png","finder_favorites_medium@3x.png","fileicon_word_icon_icon@3x.png","smile_filled@3x.png","icons_multitalk_scroll@3x.png","icons_outlined_facehb@3x.png","icons_filled_location@3x.png","expression.png","icons_filled_add@3x.png","icons_filled_shake@3x.png","translate_regular@3x.png","scan_torch@3x.png","mike_off_regular@3x.png","icons_outlined_sticker@3x.png","icons_filled_mike_off@3x.png","icons_filled_allselect@3x.png","wcpay_location@3x.png","icons_filled_WeChatSearchEmblem@3x.png","discover_regular@3x.png","icons_filled_video_call@3x.png","qr_code_filled@3x.png","ui-resources_checkbox_unselected@3x.png","icon_music_regular@3x.png","C2C_AA_Icon_Default@3x.png","icons_outlined_channels_bulletscreen_open@3x.png","TypeSelectorBtn_Black@3x.png","icons_filled_scan@3x.png","icons_outlined_channels_good_1.5pt@3x.png","icons_outlined_arrow@3x.png","fileicon_video_icon_light@3x.png","icons_outlined_sports@3x.png","icons_filled_ear@3x.png","icons_outlined_channels_thumb_thick@3x.png","person_2_regular@3x.png","icons_outlined_pay_faceid@3x.png","MoreWeApp@3x.png","icons_outlined_searchlogo@3x.png","weapp_icon_debug@3x.png","coin1@3x.png","Voice@3x.png","icons_outlined_pay_transfer@3x.png","icons_outlined_emoji_animal@3x.png","ad_wechat_icon@3x.png","scan_arrow@3x.png","icons_outlined_searchlogo_wide@3x.png","icons_outlined_top_video_off@3x.png","person_filled@3x.png","icons_outlined_imac_lock@3x.png","icons_filled_annoucement@3x.png","icons_outlined_colorful_cards_dark@3x.png","icons_filled_transfer_text@3x.png","collect_main_savecode_success_icon@3x.png","icons_outlined_eyes_off@3x.png","Plugins_WeSport_avatar@3x.png","fileicon_unknown_icon@3x-2.png","arrow_right_filled@3x.png","coin3@3x.png","icons_outlined_eyes_on@3x.png","C2C_AA_Icon_Finish@3x.png","fileicon_txt120@3x.png","icon_color_momentcover@3x.png","live_anchor@3x.png","icons_outlined_ChangeNote@3x.png","text_regular@3x.png","icons_outlined_groupdetail_check@3x.png","shopping_bag_filled@3x.png","confetti.png","Voice.png","location_regular@3x.png","icons_outlined_bluetooth@3x.png","icons_outlined_colorful_moment_dark@3x.png","arrow_down_regular@3x.png","icons_outlined_channels_like@3x.png","icon_finder_pat_music@3x.png","ChatRoom_Bubble_Voice_Sender_Playing1@3x.png","mike_off_filled@3x.png","bell_off_filled@3x.png","location_filled@3x.png","2016_coin2@3x.png","search_filled@3x.png","icons_outlined_exchange@3x.png","icons_outlined_session_arrow_down@3x.png","c2c_cancle_icon@3x.png","icons_filled_flash_off@3x.png","icons_outlined_voice@3x.png","icons_outlined_ocr@3x.png","openim_group_hd_icon@3x.png","music_on_regular@3x.png","icons_filled_author_like_finder@3x.png","arrow_left_filled@3x.png","icons_outlined_wallet@3x.png","AlbumPushLuckymoneyIcon@3x.png","add_friend_icon_scanqr@3x.png","icon_filled_brand_voice@3x.png","fileicon_link120@3x.png","kinda_back@3x.png","icons_outlined_note_B@3x.png","live_game@3x.png","icons_filled_heart@3x.png","icons_outlined_followed@3x.png","icons_filled_circle_delete@3x.png","finder_thumb_regular@3x.png","live_game_join@3x.png","icons_filled_news_off@3x.png","scan_myqr@3x.png","WeChat_Lab_Logo_small@3x.png","c2c_received_icon@3x.png","christmas-tree.png","icons_filled_music_topic@3x.png","icons_outlined_qrcode_reward@3x.png","ear_filled@3x.png","icons_outlined_emoji_sticker@3x.png","icons_regular_play@3x.png","icons_filled_time@3x.png","2016_coin6@3x.png","icons_filled_eyes_on@3x.png","icons_outlined_ear@3x.png","icons_outlined_scan@3x.png","add_emotion_outlined@3x.png","icons_outlined_fire2@3x.png","icons_outlined_previous2-1@3x.png","icons_finder_timeline_me@3x.png","Minimize_WeNote_Default@3x.png","icons_story_chatroom_entry@3x.png","icons_outlined_paly@3x.png","finder_heart_medium@3x.png","christmas-star.png","icons_outlined_transfer@3x.png","MoreGame@3x.png","live_reward_gift_default_icon@3x.png","icon_filled_shocked@3x.png","icons_filled_text-style1.png","link_filled@3x.png","keyboard@3x.png","redenvelope_handled~iphone.png","c2c_hongbao_icon_cn@3x.png","icons_filled_me@3x.png","scan_filled@3x.png","icons_outlined_pad@3x.png","scan_album@3x.png","icons_outlined_colorful_game_fill@3x.png","weapp_more_darkmode@3x.png","magnifying_glass_filled@3x.png","redenvelope_handled@3x.png","Contact_Female@3x.png","fileicon_music@3x.png","icons_outlined_add@3x.png","icons_outlined_channels_bulletscreen_on@3x.png","add_friend_icon_contacts@3x.png","Plugins_WeSport@3x.png","c2c_received_icon~iphone@3x.png","icons_outlined_back2@3x.png","icon_outlined_search_icon_localpage@3x.png","icons_outlined_searchlogo_compact@3x.png","icons_outlined_translate@3x.png","smile_regular@3x.png","icons_outlined_album@3x.png","person_plus_filled@3x.png","fileicon_numbers120@3x.png","icons_filled_note@3x.png","icons_outlined_mobilecontacts@3x.png","bubble_circle_regular@3x.png","icons_filled_promote@3x.png","person_plus_regular@3x.png","icons_red_story_volume_off@3x.png","icons_outlined_colorful_favorites@3x.png","icons_filled_discover@3x.png","icons_filled_fire@3x.png","AlbumNewNotify@3x.png","icons_filled_sticker@3x.png","icons_outlined_colorful_websesarch@3x.png","fileicon_pages120@3x.png","icons_outlined_chats@3x.png","icon_outlined_brand_menu@3x.png","Icons_outlined_item@3x.png","StateFloatingWindow_mike@3x.png","icons_outlined_faceid@3x.png","live_icons_clear_clarity@3x.png","xmark_filled@3x.png","icons_outlined_cloud.png","About_WeChat_AppIcon@3x.png","AS_Email@3x.png","icons_filled_new_share@3x.png","fileicon_unknown_icon@3x.png","icons_outlined_colorful_moment@3x.png","icon_filled_brand_star@3x.png","icons_filled_video_call_off@3x.png","ting_good@3x.png","icons_checkbox_selected@3x.png","more_live_voice_edu_icon@3x.png","live_filled_personal_proof@3x.png","2016_coin4@3x.png","icons_outlined_session_arrow_up@3x.png","icons_outlined_album.svg@3x.png","WAWeb_Back_Dark@3x.png","icons_arrow_right_v4@3x.png","icons_outlined_human_background@3x.png","fileicon_word120@3x.png","icons_regular_allselect@3x.png","ad_canvas_music_voice_off@3x.png","weixin.png","brandsessionholder.png","ChatRoom_Bubble_Voice_Receiver_Playing1@3x.png","icons_outlined_addoutline@3x.png","icons_outlined_font.png","ChatRoom_Bubble_Voice_Sender_Playing2@3x.png","icons_outlined_videocall@3x.png","Bind_Successed_Light@3x.png","icons_filled_clock@3x.png","2016_coin1@3x.png","collapse@3x.png","icons_outlined_double_arrow@3x.png","icons_outlined_search_full@3x.png","icons_filled_barrage_off@3x.png","ChatRoom_Bubble_Voice_Receiver@3x.png","icons_filled_eyes_off_dotted@3x.png","c2c_transfer_icon~iphone@3x.png","icons_filled_music@3x.png","expression@3x.png","friend_icon@3x.png","icons_outlined_imac@3x.png","fileicon_txt_icon@3x.png","icons_outlined_shop@3x.png","fileicon_music_icon_dark@3x.png","christmas-wreath.png","imac_regular@3x.png","MoreMyFavorites@3x.png","fileicon_ofd_icon@3x.png","bell_off_regular@3x.png","redenvelope_handled~iphone@3x.png","icons_outlined_red_envelope@3x.png","weapp_icon_star@3x.png","add_friend_myQR@3x.png","icons_outlined_pay_receive_money@3x.png","icons_outlined_report_problem@3x.png","c2c_transfer_icon@3x.png","scan_watch_live@3x.png","icons_outlined_dottedlist@3x.png","icon_tag_certification_personal@3x.png","discover_filled@3x.png","icons_filled_mosaic@3x.png","mike_on_regular@3x.png","icons_filled_translate@3x.png","icons_outlined_WeChatSearchEmblem@3x.png","icons_filled_error@3x.png","person_2_filled@3x.png","icons_filled_back@3x.png","icons_filled_fire.png","icons_outlined_top_video@3x.png","icons_filled_music_icon@3x.png","icons_outlined_qr_code@3x.png","c2c_received_icon~iphone.png","DefaultProfileHead@3x.png","icons_filled_play3@3x.png","icon_filled_brand_verify_star@3x.png","dt_icon_dark@3x.png","icons_outlined_discover@3x.png","icons_regular_voice@3x.png","live_shopping@3x.png","voice_circle_filled@3x.png","icons_filled_flash_on@3x.png","icons_filled_delete_on@3x.png","finder_colorring@3x.png","icons_outline_miniprogram_order@3x.png","icons_outlined_float_window_hl@3x.png","icons_filled_clip_rotate@3x.png","ting_good_checked@3x.png","icons_filled_maxwindow@3x.png","AlbumLocationIconHL@3x.png","icons_filled_minwindow@3x.png","icon_outlined_search_more_magnifier@3x.png","camera_transfer_filled@3x.png","icons_outlined_cancel_top@3x.png","Icons_Filled_DelEmoji@3x.png","icons_filled_pause@3x.png","icons_outlined_video_call@3x.png","translate_filled@3x.png","ad_finder_live_icon@3x.png","icons_filled_mini_program3@3x.png","icons_outlined_colorful_chatroom_invitation@3x.png","link_regular@3x.png","shake_regular@3x.png","icon_music_filled@3x.png","christmas-present.png","christmas-glove.png","icons_filled_airplay@3x.png","icons_outlined_pay_logo@3x.png","volume_off_filled@3x.png","icons_outlined_pencil2@3x.png","fileicon_unknow120@3x.png","SystemMessages_HongbaoIcon@3x.png","arrow_right_regular@3x.png","add_friend_icon_search_wework@3x.png","icons_outlined_email@3x.png","icons_outlined_colorful_handoff@3x.png","dt_icon@3x.png","scan_regular@3x.png","icons_filled_back2@3x.png","icon_outlined_identity@3x.png","icons_filled_channels_bulletscreen_redoff@3x.png","icons_filled_new_search@3x.png","weapp_icon_show_performance@3x.png","coin2@3x.png","icons_outlined_mosaic@3x.png","add_friend_icon_reda@3x.png","icons_outlined_star@3x.png","Contact_Male@3x.png","icons_filled_chatbox.png","icons_outlined_colorful_favorites_dark@3x.png","ting_profile_1003@3x.png","icons_filled_play@3x.png","qr_code_regular@3x.png","icons_filled_search_logo@3x.png","icons_outlined_channels_bulletscreen_off@3x.png","icons_filled_live_camera_settings@3x.png","icons_filled_transfer_text_en@3x.png","icons_outlined_playBtn@3x.png","icons_outlined_tv@3x.png","icons_filled_add2@3x.png","icons_outlined_fire.png","icons_outlined_pauseBtn@3x.png","tag_filled@3x.png","dt_icon.png","icons_outlined_channels_like_off@3x.png","icons_filled_switch@3x.png","ad_canvas_music_voice_off-2@3x.png","c2c_hongbao_icon_cn.png","christmas-shopping.png","icons_outlined_back@3x.png","icons_outlined_allselect@3x.png","icons_outlined_channels_like_thicksvg@3x.png","icons_outlined_email.png","icon_outlined_search_arrow_up@3x.png","icons_filled_float_window_on@3x.png","icons_outlined_display_mobile@3x.png","icons_outlined_search_logo@3x.png","icons_outlined_search@3x.png","C2C_AA_Icon_Normal@3x.png","icons_outlined_transfer_text@3x.png","icons_outlined_colorful_cards@3x.png","icons_outlined_bellring_off@3x.png","voice_circle_regular@3x.png","avatar_dotline_minus_bg@3x.png","WeChat_Lab_Logo_light_small@3x.png","coin6@3x.png","bubble_circle_filled@3x.png","WeChat_Lab_Logo@3x.png","icons_filled_shop@3x.png","icons_outlined_device_pc_large@3x.png","weapp_icon_unstar@3x.png","icons_outlined_searchicon_music@3x.png","icons_filled_crop@3x.png","icons_filled_voice@3x.png","ear_regular@3x.png","coin4@3x.png","redenvelope_handled_hk@3x.png","icons_outlined_me@3x.png","text_filled@3x.png","chat_room_tools_chat_room_desc@3x.png","previous_circle_filled@3x.png","icons_outlined_migration_move_to_computer@3x.png","icon_live_camera_setting@3x.png","BigBang@3x.png","icons_filled_red_envelope@3x.png","fileicon_ofd@3x.png","icons_outlined_complaint@3x.png","icons_outlined_colorful_nearby_album@3x.png","search_regular@3x.png","magnifying_glass_regular@3x.png","NewFriend_Contacts_icon@3x.png","icons_filled_min_window@3x.png","candy-cane.png","fileicon_ppt@3x.png","icons_filled_search@3x.png","pay_arrowleft@3x.png","icons_filled_finder_live@3x.png","finder_heart_regular@3x.png","icons_filled_wechatWork@3x.png","volume_on_filled@3x.png","icons_outlined_more_circle@3x.png","icons_filled_gift@3x.png","FriendsSendsPicturesSelectYIcon@3x.png","2016_coin5@3x.png","icons_filled_channels_good@3x.png","shopping_bag_regular@3x.png","arrow_left_regular@3x.png","icons_filled_star@3x.png","ChatRoom_Bubble_Voice_Sender@3x.png","person_regular@3x.png","icons_tl_medium_arrow_left@3x.png","icons_outlined_live_game@3x.png","christmas-stockings.png","icons_filled_bell_ring_off@3x.png","icons_finder_filled_music@3x.png","icons_filled_text-style1@3x.png","icons_filled_wn_copy@3x.png","icons_filled_set_listening_status@3x.png","icons_outlined_colorful_handoff_success@3x.png","icons_outlined_channels_like_thick@3x.png","icons_outlined_colorful_note@3x.png","c2c_rejected_ico@3x.png","icon_filled_brand_verify@3x.png","icons_filled_state@3x.png","icons_filled_channels_bulletscreen_brandon@3x.png","icons_outlined_mike_off@3x.png","add_friend_icon_newgroup@3x.png","icons_filled_arrow@3x.png","icons_outlined_mosaic2@3x.png","icons_filled_mask@3x.png"
+];
+</script>
+</body>
+</html>
