@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>昀昀盒子工具</title>
+<title>昀昀盒子</title>
 <style>
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
   :root{
@@ -153,16 +153,31 @@
   <div class="progress" id="progress">正在处理…</div>
 
   <div class="section-title"><span class="num">2</span> 夜间模式生成（专属入口）</div>
+
+  <!-- 对方夜间：1 张 → 2 张 -->
   <div class="transfer-box">
-    <div class="transfer-title">🌙 夜间模式 1 张 → 复制 2 张</div>
+    <div class="transfer-title">🌙 对方夜间（1 张 → 复制 2 张）</div>
     <div class="transfer-row">
       <label class="mini-upload">
-        📂 选择夜间模式图片
+        📂 选择对方夜间图片
         <input type="file" id="transferDarkInput" accept="image/*">
       </label>
       <span class="mini-status" id="transferDarkStatus">未上传</span>
     </div>
     <div class="dark-thumbs" id="darkThumbs"></div>
+  </div>
+
+  <!-- 我方夜间：1 张 → 4 张 -->
+  <div class="transfer-box">
+    <div class="transfer-title">💬 我方夜间（1 张 → 复制 4 张）</div>
+    <div class="transfer-row">
+      <label class="mini-upload">
+        📂 选择我方夜间图片
+        <input type="file" id="transferSenderInput" accept="image/*">
+      </label>
+      <span class="mini-status" id="transferSenderStatus">未上传</span>
+    </div>
+    <div class="dark-thumbs" id="senderThumbs"></div>
   </div>
 
   <div class="section-title"><span class="num">3</span> 自动命名结果（可手动调整）</div>
@@ -187,7 +202,7 @@
   <button class="btn btn-green" id="downloadBtn" disabled>📦 打包下载重命名图片（单独）</button>
 
   <div class="log" id="log"></div>
-  <div class="hint">💡 781×271 自动复制成 10 张，171×121 自动 2 张，850×125 自动 4 张（input_text_bg / input_voice_bg / _Dark），夜间模式 2 张。**171×121、781×271、850×125 这三种尺寸不裁剪透明底，保留原尺寸**。tabbar_bg / topbar_bg / input_bg / default_bg / chat_bg 都按名字两两一组，不会因为尺寸相近被合并。</div>
+  <div class="hint">💡 781×271 自动复制成 10 张，171×121 自动 2 张，850×125 自动 4 张（input_text_bg / input_voice_bg / _Dark），对方夜间 2 张，我方夜间 4 张。**171×121、781×271、850×125 这三种尺寸不裁剪透明底，保留原尺寸**。tabbar_bg / topbar_bg / input_bg / default_bg / chat_bg 都按名字两两一组，不会因为尺寸相近被合并。</div>
 </div>
 
 <!-- ============ 面板2：昀昀图标一键 DIY ============ -->
@@ -307,6 +322,9 @@
   const transferDarkInput = document.getElementById('transferDarkInput');
   const transferDarkStatus = document.getElementById('transferDarkStatus');
   const darkThumbsEl = document.getElementById('darkThumbs');
+  const transferSenderInput = document.getElementById('transferSenderInput');
+  const transferSenderStatus = document.getElementById('transferSenderStatus');
+  const senderThumbsEl = document.getElementById('senderThumbs');
   const zipNameInput = document.getElementById('zipNameInput');
 
   const NAME_SCHEMES = {
@@ -326,7 +344,16 @@
       ]
     },
     'bubble2': { label: '气泡 2 张（171×121）', names: ['ChatRoom_Bubble_Text_Sender_Green','ChatRoom_Bubble_Text_Receiver_White'] },
-    'night2': { label: '夜间 2 张', names: ['ChatRoom_Bubble_Text_Receiver_Dark_HL','ChatRoom_Bubble_Text_Receiver_Dark'] },
+    'night2': { label: '对方夜间 2 张', names: ['ChatRoom_Bubble_Text_Receiver_Dark_HL','ChatRoom_Bubble_Text_Receiver_Dark'] },
+    'night2_sender': {
+      label: '我方夜间 4 张',
+      names: [
+        'ChatRoom_Bubble_Text_Sender_Green_Dark@3x',
+        'ChatRoom_Bubble_App_Sender_Dark@3x',
+        'ChatRoom_Bubble_Voice_Receiver_Recording_HL_Dark@3x',
+        'ChatRoom_Bubble_Text_Sender_Green_HL_Dark@3x'
+      ]
+    },
     'input_bg_voice_4': {
       label: '输入框 4 张（850×125）',
       names: ['input_text_bg','input_voice_bg','input_text_bg_Dark','input_voice_bg_Dark']
@@ -399,6 +426,19 @@
     }
     if(schemeKey === 'night2'){
       const order = ['ChatRoom_Bubble_Text_Receiver_Dark_HL','ChatRoom_Bubble_Text_Receiver_Dark'];
+      return [...items].sort((a,b)=>{
+        const ai = order.indexOf(a.assignedName);
+        const bi = order.indexOf(b.assignedName);
+        return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
+      });
+    }
+    if(schemeKey === 'night2_sender'){
+      const order = [
+        'ChatRoom_Bubble_Text_Sender_Green_Dark@3x',
+        'ChatRoom_Bubble_App_Sender_Dark@3x',
+        'ChatRoom_Bubble_Voice_Receiver_Recording_HL_Dark@3x',
+        'ChatRoom_Bubble_Text_Sender_Green_HL_Dark@3x'
+      ];
       return [...items].sort((a,b)=>{
         const ai = order.indexOf(a.assignedName);
         const bi = order.indexOf(b.assignedName);
@@ -812,10 +852,26 @@
       if(dark) items.push(dark);
       groups.push({
         id: uid(), w: 0, h: 0, schemeKey: 'night2',
-        groupLabel: '夜间 2 张',
+        groupLabel: '对方夜间 2 张',
         items: sortPairItems(items, 'night2')
       });
       items.forEach(x=>handled.add(x.id));
+    }
+
+    const senderNames = [
+      'ChatRoom_Bubble_Text_Sender_Green_Dark@3x',
+      'ChatRoom_Bubble_App_Sender_Dark@3x',
+      'ChatRoom_Bubble_Voice_Receiver_Recording_HL_Dark@3x',
+      'ChatRoom_Bubble_Text_Sender_Green_HL_Dark@3x'
+    ];
+    const senderItems = images.filter(im => senderNames.includes(im.assignedName));
+    if(senderItems.length > 0){
+      groups.push({
+        id: uid(), w: 0, h: 0, schemeKey: 'night2_sender',
+        groupLabel: '我方夜间 4 张',
+        items: sortPairItems(senderItems, 'night2_sender')
+      });
+      senderItems.forEach(x=>handled.add(x.id));
     }
 
     const inputBgItems = images.filter(im =>
@@ -908,10 +964,14 @@
     });
 
     groups.sort((a,b)=> {
-      if(a.schemeKey === 'bubble2') return -2;
-      if(a.schemeKey === 'night2') return -1;
-      if(b.schemeKey === 'bubble2') return 2;
-      if(b.schemeKey === 'night2') return 1;
+      if(a.schemeKey === 'bubble2') return -4;
+      if(a.schemeKey === 'night2') return -3;
+      if(a.schemeKey === 'night2_sender') return -2;
+      if(a.schemeKey === 'input_bg_voice_4') return -1;
+      if(b.schemeKey === 'bubble2') return 4;
+      if(b.schemeKey === 'night2') return 3;
+      if(b.schemeKey === 'night2_sender') return 2;
+      if(b.schemeKey === 'input_bg_voice_4') return 1;
       return a.w - b.w || a.h - b.h;
     });
   }
@@ -1231,6 +1291,10 @@
     transferDarkStatus.className = 'mini-status';
     transferDarkInput.value = '';
     darkThumbsEl.innerHTML = '';
+    transferSenderStatus.textContent = '未上传';
+    transferSenderStatus.className = 'mini-status';
+    transferSenderInput.value = '';
+    senderThumbsEl.innerHTML = '';
     zipNameInput.value = '昀昀盒子';
   }
 
@@ -1286,6 +1350,7 @@
     updateButtons();
   }
 
+  // 对方夜间：1 张 → 2 张
   async function handleTransferDark(file){
     if(!file) return;
     try{
@@ -1319,15 +1384,66 @@
         darkThumbsEl.appendChild(thumb);
       }
 
-      log(`✅ 夜间模式已复制成 2 张并命名（不裁剪透明底）`);
+      log(`✅ 对方夜间已复制成 2 张并命名（不裁剪透明底）`);
       buildDisplayGroups();
       renderAll();
       updateStatus();
       updateButtons();
     }catch(e){
-      log(`夜间模式处理失败: ${e.message}`, true);
+      log(`对方夜间处理失败: ${e.message}`, true);
       transferDarkStatus.textContent = '❌ 处理失败';
       transferDarkStatus.className = 'mini-status err';
+    }
+  }
+
+  // 我方夜间：1 张 → 4 张
+  async function handleTransferSender(file){
+    if(!file) return;
+    try{
+      const srcFile = file;
+      const {width,height,url} = await getImageSize(srcFile);
+      transferSenderStatus.textContent = `✅ ${width}×${height}，生成 4 张（不裁剪）`;
+      transferSenderStatus.className = 'mini-status';
+
+      const NAMES = [
+        'ChatRoom_Bubble_Text_Sender_Green_Dark@3x',
+        'ChatRoom_Bubble_App_Sender_Dark@3x',
+        'ChatRoom_Bubble_Voice_Receiver_Recording_HL_Dark@3x',
+        'ChatRoom_Bubble_Text_Sender_Green_HL_Dark@3x'
+      ];
+      for(let i = 0; i < NAMES.length; i++){
+        const newFile = new File([srcFile], NAMES[i] + '.png', { type: 'image/png' });
+        await addImageFiles([{
+          file: newFile,
+          assignedName: NAMES[i],
+          assignedExt: '.png',
+          isGenerated: true,
+          trimmed: false,
+          originalWidth: 0,
+          originalHeight: 0
+        }]);
+      }
+
+      senderThumbsEl.innerHTML = '';
+      for(const name of NAMES){
+        const thumb = document.createElement('div');
+        thumb.className = 'dark-thumb';
+        thumb.innerHTML = `
+          <img src="${url}" alt="">
+          <div class="n">${name}.png</div>
+        `;
+        senderThumbsEl.appendChild(thumb);
+      }
+
+      log(`✅ 我方夜间已复制成 4 张并命名（不裁剪透明底）`);
+      buildDisplayGroups();
+      renderAll();
+      updateStatus();
+      updateButtons();
+    }catch(e){
+      log(`我方夜间处理失败: ${e.message}`, true);
+      transferSenderStatus.textContent = '❌ 处理失败';
+      transferSenderStatus.className = 'mini-status err';
     }
   }
 
@@ -1357,6 +1473,11 @@
   transferDarkInput.addEventListener('change', e=>{
     if(e.target.files.length) handleTransferDark(e.target.files[0]);
     transferDarkInput.value = '';
+  });
+
+  transferSenderInput.addEventListener('change', e=>{
+    if(e.target.files.length) handleTransferSender(e.target.files[0]);
+    transferSenderInput.value = '';
   });
 
   clearBtn.addEventListener('click', resetAll);
