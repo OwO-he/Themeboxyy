@@ -179,6 +179,10 @@
   #panel-kb #kbloading { display: none; margin: 14px 0; font-size: 14px; color: #4a6cf7; text-align: center; }
   #panel-kb .exportRow { margin-top: 16px; text-align: center; }
   #panel-kb .exportRow .btn-main { width: 100%; padding: 14px 0; font-size: 15px; }
+  #panel-kb #kbdemoRow { display: flex; align-items: center; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+  #panel-kb #kbdemoRow .btn-ghost { flex: none; }
+  #panel-kb #kbdemoInfo { font-size: 12px; color: #8a8f9c; flex: 1; min-width: 0; word-break: break-all; }
+  #panel-kb #kbdemoClear { min-height: 32px; padding: 4px 10px; font-size: 12px; flex: none; }
 </style>
 </head>
 <body>
@@ -335,6 +339,13 @@
   <div id="kbdropZone">
     <div class="big">📁</div>
     <input type="file" id="kbfileInput" multiple accept=".png,.jpg,.jpeg,.webp,.zip">
+  </div>
+
+  <div id="kbdemoRow">
+    <button class="btn-ghost" id="kbbtnDemo">🖼️ 选择 demo.png</button>
+    <span id="kbdemoInfo">未选择（打包时放在压缩包根目录）</span>
+    <button class="btn-danger" id="kbdemoClear" style="display:none">✕</button>
+    <input type="file" id="kbdemoInput" accept="image/*" style="display:none">
   </div>
 
   <div id="kbloading">⏳ 处理中，请稍候…</div>
@@ -2447,6 +2458,29 @@ const DIY_NAME_LIST = [
     render();
   }
 
+  /* ---------- demo.png（打包时放压缩包根目录） ---------- */
+  var demoInput = document.getElementById('kbdemoInput');
+  var demoBtn = document.getElementById('kbbtnDemo');
+  var demoInfo = document.getElementById('kbdemoInfo');
+  var demoClear = document.getElementById('kbdemoClear');
+  var demoBlob = null;
+  demoBtn.addEventListener('click', function () { demoInput.click(); });
+  demoInput.addEventListener('change', function () {
+    var f = demoInput.files && demoInput.files[0];
+    if (f) {
+      demoBlob = f;
+      demoInfo.textContent = '已选择：' + f.name + '（打包时统一命名为 demo.png）';
+      demoClear.style.display = '';
+      log('🖼️ demo.png 已选择：' + f.name + (/\.(png)$/i.test(f.name) ? '' : '，后缀不是 png，打包时将改为 demo.png'));
+    }
+    demoInput.value = '';
+  });
+  demoClear.addEventListener('click', function () {
+    demoBlob = null;
+    demoInfo.textContent = '未选择（打包时放在压缩包根目录）';
+    demoClear.style.display = 'none';
+  });
+
   /* ---------- 导出 ---------- */
   function exportZip() {
     var names = {};
@@ -2468,6 +2502,9 @@ const DIY_NAME_LIST = [
         /* 统一导出为 .png 后缀（非 png 图片也改成 png） */
         folder.file(it.name + '.png', it.blob);
       });
+      if (demoBlob) {
+        zip.file('demo.png', demoBlob);
+      }
       return zip.generateAsync({ type: 'blob', compression: 'DEFLATE' });
     }).then(function (blob) {
       var ts = new Date();
@@ -2483,7 +2520,7 @@ const DIY_NAME_LIST = [
         a.remove();
       }, 2000);
       setLoading(false);
-      log('📦 已打包下载：日间 ' + modeItems('day').length + ' 张，夜间 ' + modeItems('night').length + ' 张');
+      log('📦 已打包下载：日间 ' + modeItems('day').length + ' 张，夜间 ' + modeItems('night').length + ' 张' + (demoBlob ? '，根目录 demo.png 1 张' : ''));
     }).catch(function (err) {
       setLoading(false);
       log('❌ 打包失败：' + (err && err.message ? err.message : '未知错误'));
@@ -2543,7 +2580,6 @@ const DIY_NAME_LIST = [
     var it = items.find(function (x) { return x.id === selectedId; });
     if (!it) return;
     var n = Math.max(1, Math.min(99, parseInt(copyCount.value, 10) || 1));
-    var newNames = [];
     for (var i = 0; i < n; i++) {
       var copy = {
         id: ++idSeq,
@@ -2555,11 +2591,9 @@ const DIY_NAME_LIST = [
         srcName: it.srcName,
         w: it.w, h: it.h, rect: it.rect
       };
-      copy.name = nextAny(it.mode);
-      newNames.push(copy.name || '（该模式预设已用完，请手动选）');
       items.push(copy);
     }
-    log('⧉ ' + modeLabel(it.mode) + '：「' + (it.name || it.srcName) + '」已复制 ' + n + ' 张，自动分配：' + newNames.join('、'));
+    log('⧉ ' + modeLabel(it.mode) + '：「' + (it.name || it.srcName) + '」已复制 ' + n + ' 张，新图片未命名，请自己选名字');
     selectedId = null;
     render();
   });
@@ -2573,7 +2607,6 @@ const DIY_NAME_LIST = [
     if (!multiSel.length) return;
     var mode = activeMode;
     var sel = items.filter(function (x) { return x.mode === mode && multiSel.indexOf(x.id) !== -1; });
-    var newNames = [];
     sel.forEach(function (it) {
       var copy = {
         id: ++idSeq,
@@ -2585,11 +2618,9 @@ const DIY_NAME_LIST = [
         srcName: it.srcName,
         w: it.w, h: it.h, rect: it.rect
       };
-      copy.name = nextAny(mode);
-      newNames.push(copy.name || '（该模式预设已用完，请手动选）');
       items.push(copy);
     });
-    log('⧉ ' + modeLabel(mode) + '已复制 ' + sel.length + ' 张，自动分配：' + newNames.join('、'));
+    log('⧉ ' + modeLabel(mode) + '已复制 ' + sel.length + ' 张，新图片未命名，请自己选名字');
     exitMulti();
   });
 
